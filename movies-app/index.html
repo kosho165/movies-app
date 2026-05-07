@@ -4,113 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>أكاديمية اللغات | Movies to Fluency</title>
-    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-
     <style>
-        :root {
-            --primary-purple: #6f42c1;
-            --dark-purple: #553098;
-            --light-purple: #f3e8ff;
-            --bg-color: #f8f9fa;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            color: #333;
-        }
-
-        header {
-            background: var(--primary-purple);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .container {
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            width: 100%;
-            flex-grow: 1;
-        }
-
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(111, 66, 193, 0.1);
-            text-align: center;
-            border: 1px solid var(--light-purple);
-        }
-
-        input {
-            width: 90%;
-            padding: 15px;
-            margin: 10px 0;
-            border: 2px solid var(--light-purple);
-            border-radius: 10px;
-            font-size: 16px;
-            outline: none;
-        }
-
-        input:focus {
-            border-color: var(--primary-purple);
-        }
-
-        button {
-            background: var(--primary-purple);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            transition: 0.3s;
-            margin-top: 10px;
-        }
-
-        button:hover {
-            background: var(--dark-purple);
-            transform: translateY(-2px);
-        }
-
-        .lesson-item {
-            background: var(--light-purple);
-            margin: 10px 0;
-            padding: 15px;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            text-decoration: none;
-            color: var(--dark-purple);
-            font-weight: bold;
-        }
-
-        footer {
-            padding: 20px;
-            text-align: center;
-            font-size: 14px;
-            color: #666;
-            background: #fff;
-            border-top: 1px solid #eee;
-        }
-
+        :root { --primary-purple: #6f42c1; --light-purple: #f3e8ff; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f8f9fa; margin: 0; display: flex; flex-direction: column; min-height: 100vh; text-align: center; }
+        header { background: var(--primary-purple); color: white; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .container { padding: 20px; max-width: 800px; margin: 0 auto; width: 100%; flex-grow: 1; }
+        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(111, 66, 193, 0.1); border: 1px solid var(--light-purple); }
+        input { width: 90%; padding: 15px; margin: 10px 0; border: 2px solid var(--light-purple); border-radius: 10px; font-size: 16px; }
+        button { background: var(--primary-purple); color: white; border: none; padding: 15px 40px; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; }
+        .lesson-item { background: var(--light-purple); margin: 10px 0; padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: #553098; font-weight: bold; border: 1px solid transparent; transition: 0.3s; }
+        .lesson-item:hover { border-color: var(--primary-purple); background: #ece0ff; }
+        footer { padding: 20px; text-align: center; color: #666; border-top: 1px solid #eee; }
         .screen { display: none; }
     </style>
 </head>
 <body>
-
     <header>
         <h1>Movies to Fluency</h1>
         <div id="userInfo" style="display:none; margin-top:10px;">
@@ -118,35 +28,29 @@
             <button onclick="logout()" style="padding:5px 15px; font-size:14px; background:#dc3545;">خروج</button>
         </div>
     </header>
-
     <div class="container">
         <div id="loginScreen" class="screen" style="display: block;">
             <div class="card">
                 <h2 style="color: var(--primary-purple);">مرحباً بك في الكورس</h2>
-                <p>سجل بياناتك لتبدأ التعلم فوراً</p>
                 <input type="text" id="studentName" placeholder="اكتب اسمك بالكامل">
                 <input type="email" id="studentEmail" placeholder="البريد الإلكتروني">
-                <br>
-                <button onclick="handleLogin()">دخول الكورس</button>
+                <br><button onclick="handleLogin()">دخول الكورس</button>
             </div>
         </div>
-
         <div id="dashboardScreen" class="screen">
             <div class="card">
                 <h3 style="color: var(--primary-purple);">قائمة دروس الحلقة الأولى</h3>
                 <div id="lessonsList" style="margin-top: 20px; text-align: right;">
-                    <a href="#" class="lesson-item"><span>🎬 المشهد 1: التعارف</span> <span>✔️</span></a>
-                    <a href="#" class="lesson-item"><span>🎬 المشهد 2: في الحديقة</span> <span>🔒</span></a>
-                    <a href="#" class="lesson-item"><span>🎬 المشهد 3: الهروب الكبير</span> <span>🔒</span></a>
+                    <a href="level-a1/muzzy-series/episode-01/scene-01/index.html" class="lesson-item"><span>🎬 المشهد 1: التعارف</span> <span>🔓</span></a>
+                    <a href="level-a1/muzzy-series/episode-01/scene-02/index.html" class="lesson-item"><span>🎬 المشهد 2: في الحديقة</span> <span>🔓</span></a>
+                    <a href="level-a1/muzzy-series/episode-01/scene-03/index.html" class="lesson-item"><span>🎬 المشهد 3: الهروب الكبير</span> <span>🔓</span></a>
+                    <a href="level-a1/muzzy-series/episode-01/scene-04/index.html" class="lesson-item"><span>🎬 المشهد 4: المواجهة</span> <span>🔓</span></a>
+                    <a href="level-a1/muzzy-series/episode-01/scene-05/index.html" class="lesson-item"><span>🎬 المشهد 5: النهاية</span> <span>🔓</span></a>
                 </div>
             </div>
         </div>
     </div>
-
-    <footer>
-        <p>Created by: Hisham Embaby</p>
-    </footer>
-
+    <footer><p>Created by: Hisham Embaby</p></footer>
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyBNF8mnf0ucVbAbuZojokGSKNnUvQNvoGk",
@@ -156,54 +60,26 @@
             messagingSenderId: "766824698161",
             appId: "1:766824698161:web:aeb8d7ab371912e7aee010"
         };
-
-        // تشغيل فايربيز
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
-        const db = firebase.firestore();
-
-        // دالة الدخول المباشر
         async function handleLogin() {
             const name = document.getElementById('studentName').value;
             const email = document.getElementById('studentEmail').value;
-
-            if (!name || !email) {
-                alert("برجاء كتابة الاسم والإيميل");
-                return;
-            }
-
+            if (!name || !email) { alert("برجاء كتابة الاسم والإيميل"); return; }
             try {
-                // تسجيل الطالب في فايربيز مباشرة
-                try {
-                    await auth.createUserWithEmailAndPassword(email, "12345678");
-                } catch (e) {
-                    await auth.signInWithEmailAndPassword(email, "12345678");
-                }
-                
+                try { await auth.createUserWithEmailAndPassword(email, "12345678"); } 
+                catch (e) { await auth.signInWithEmailAndPassword(email, "12345678"); }
                 showDashboard(name);
-            } catch (error) {
-                console.error(error);
-                alert("حدثت مشكلة في الربط: " + error.message);
-            }
+            } catch (error) { alert("حدثت مشكلة: " + error.message); }
         }
-
         function showDashboard(name) {
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('dashboardScreen').style.display = 'block';
             document.getElementById('userInfo').style.display = 'block';
             document.getElementById('userNameDisplay').innerText = "يا " + name;
         }
-
-        function logout() {
-            auth.signOut().then(() => { location.reload(); });
-        }
-
-        // لو الطالب مسجل دخول قبل كده يفتحله الدروس علطول
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                showDashboard(user.email);
-            }
-        });
+        function logout() { auth.signOut().then(() => { location.reload(); }); }
+        auth.onAuthStateChanged(user => { if (user) { showDashboard(user.email); } });
     </script>
 </body>
 </html>
