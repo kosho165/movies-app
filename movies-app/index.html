@@ -10,7 +10,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
     <style>
-        /* === تصميم الحاجة جيسي بالألوان الأرجوانية === */
         :root {
             --primary-purple: #6f42c1;
             --dark-purple: #553098;
@@ -124,12 +123,11 @@
         <div id="loginScreen" class="screen" style="display: block;">
             <div class="card">
                 <h2 style="color: var(--primary-purple);">مرحباً بك في الكورس</h2>
-                <p>سجل بياناتك واستخدم كود التفعيل لتبدأ التعلم</p>
+                <p>سجل بياناتك لتبدأ التعلم فوراً</p>
                 <input type="text" id="studentName" placeholder="اكتب اسمك بالكامل">
                 <input type="email" id="studentEmail" placeholder="البريد الإلكتروني">
-                <input type="text" id="activationCode" placeholder="كود التفعيل">
                 <br>
-                <button onclick="handleLogin()">تفعيل ودخول</button>
+                <button onclick="handleLogin()">دخول الكورس</button>
             </div>
         </div>
 
@@ -150,14 +148,13 @@
     </footer>
 
     <script>
-        // === يا حاج هشام حط بيانات الـ Config بتاعتك هنا بالظبط ===
         const firebaseConfig = {
-            apiKey: "ضع_هنا_API_KEY",
+            apiKey: "AIzaSyBNF8mnf0ucVbAbuZojokGSKNnUvQNvoGk",
             authDomain: "hishams-english-academy.firebaseapp.com",
             projectId: "hishams-english-academy",
             storageBucket: "hishams-english-academy.appspot.com",
-            messagingSenderId: "ضع_هنا_الرقم",
-            appId: "ضع_هنا_APP_ID"
+            messagingSenderId: "766824698161",
+            appId: "1:766824698161:web:aeb8d7ab371912e7aee010"
         };
 
         // تشغيل فايربيز
@@ -165,44 +162,25 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // دالة الدخول والربط بفايربيز
+        // دالة الدخول المباشر
         async function handleLogin() {
             const name = document.getElementById('studentName').value;
             const email = document.getElementById('studentEmail').value;
-            const code = document.getElementById('activationCode').value;
 
-            if (!name || !email || !code) {
-                alert("برجاء ملء جميع البيانات يا بطل");
+            if (!name || !email) {
+                alert("برجاء كتابة الاسم والإيميل");
                 return;
             }
 
             try {
-                // 1. التحقق من كود التفعيل في Firestore
-                const codeDoc = await db.collection('activation_codes').doc(code).get();
-                
-                if (codeDoc.exists && !codeDoc.data().used) {
-                    // 2. تسجيل الطالب في Authentication
-                    // بنعمل حساب بكلمة سر ثابتة للسهولة
-                    try {
-                        await auth.createUserWithEmailAndPassword(email, "12345678");
-                    } catch (e) {
-                        await auth.signInWithEmailAndPassword(email, "12345678");
-                    }
-
-                    // 3. حفظ بيانات الطالب وتحديث الكود
-                    await db.collection('students').add({
-                        name: name,
-                        email: email,
-                        code: code,
-                        date: new Date()
-                    });
-                    
-                    await db.collection('activation_codes').doc(code).update({ used: true });
-
-                    showDashboard(name);
-                } else {
-                    alert("عفواً! كود التفعيل غير صحيح أو تم استخدامه");
+                // تسجيل الطالب في فايربيز مباشرة
+                try {
+                    await auth.createUserWithEmailAndPassword(email, "12345678");
+                } catch (e) {
+                    await auth.signInWithEmailAndPassword(email, "12345678");
                 }
+                
+                showDashboard(name);
             } catch (error) {
                 console.error(error);
                 alert("حدثت مشكلة في الربط: " + error.message);
