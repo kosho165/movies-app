@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أكاديمية اللغات | English with Muzzy</title>
+    <style>
+        :root { --primary-purple: #6f42c1; --light-purple: #f3e8ff; --dark-purple: #553098; --bg-color: #f8f9fa; --text-dark: #333; --text-gray: #6c757d; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); margin: 0; padding: 20px; color: var(--text-dark); }
+        .top-header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; max-width: 1200px; margin-left: auto; margin-right: auto; border-bottom: 4px solid var(--primary-purple); }
+        .header-title h2 { margin: 0; color: var(--primary-purple); }
+        .en-sub { font-size: 13px; color: var(--text-gray); display: block; font-weight: normal; margin-top: 3px; direction: ltr;}
+        .points-badge { font-weight: bold; background: #fff3cd; color: #856404; padding: 10px 20px; border-radius: 30px; border: 1px solid #ffeeba; text-align: center; transition: 0.3s;}
+        .points-deducted { background: #f8d7da !important; color: #721c24 !important; border-color: #f5c6cb !important; transform: scale(1.1); }
+        .completion-banner { background: #d4edda; color: #155724; padding: 15px 20px; border-radius: 12px; text-align: center; margin-bottom: 20px; border: 2px solid #c3e6cb; box-shadow: 0 4px 6px rgba(0,0,0,0.05); max-width: 1200px; margin-left: auto; margin-right: auto; }
+        .main-layout { display: flex; flex-direction: column; gap: 20px; max-width: 1200px; margin: 0 auto; }
+        @media (min-width: 992px) { .main-layout { flex-direction: row; align-items: flex-start; } .media-column { flex: 1; position: sticky; top: 20px; } .interactive-column { flex: 1.2; } }
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 15px; background: #000; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        .speed-controls { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .speed-btn { background: white; border: 2px solid #ddd; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; color: var(--text-dark); transition: 0.2s; text-align: center; display: flex; flex-direction: column; align-items: center; }
+        .speed-btn:hover, .speed-btn.active-speed { background: var(--primary-purple); color: white; border-color: var(--dark-purple); }
+        .speed-btn:hover .en-sub, .speed-btn.active-speed .en-sub { color: #f0f0f0; }
+        .tabs-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
+        .tab-btn { flex: 1 1 calc(33% - 8px); min-width: 130px; background: white; border: 2px solid transparent; padding: 12px 10px; border-radius: 10px; cursor: pointer; text-align: center; font-weight: bold; font-size: 14px; color: var(--text-dark); transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .tab-btn:hover { background: var(--light-purple); border-color: var(--primary-purple); transform: translateY(-2px); }
+        .tab-btn.active { background: var(--primary-purple); color: white; border-color: var(--dark-purple); }
+        .tab-btn.active .en-sub { color: #f0f0f0; }
+        .tab-btn.locked { color: #aaa; cursor: not-allowed; background: #eee; }
+        .word-counter-badge { background: #dc3545; color: white; border-radius: 50%; padding: 2px 8px; font-size: 12px; font-weight: bold; margin-right: 5px; }
+        .content-area { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 20px; }
+        .tab-content { display: none; } .tab-content.active-content { display: block; }
+        .script-box { height: 400px; overflow-y: auto; scroll-behavior: smooth; background: var(--bg-color); padding: 20px; border-radius: 10px; border: 1px solid #ddd; direction: ltr; text-align: left; position: relative; }
+        @media (max-width: 768px) { .script-box { height: 250px; } }
+        .script-line { font-size: 18px; color: #555; padding: 8px; margin-bottom: 5px; border-radius: 5px; transition: 0.2s; }
+        .script-line.active-line { background-color: #ffeeb0; color: #000; font-weight: bold; font-size: 20px; border-left: 5px solid #ffc107; }
+        .word { cursor: pointer; padding: 2px 4px; border-radius: 4px; transition: 0.2s; display: inline-block;}
+        .word:hover { background: var(--light-purple); color: var(--primary-purple); font-weight: bold; }
+        .dictionary-box { height: 280px; overflow-y: auto; margin-bottom: 15px;}
+        .word-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; background: #fff; border-radius: 8px; margin-bottom: 8px; border-right: 4px solid var(--primary-purple); }
+        .word-en { font-weight: bold; font-size: 18px; color: var(--primary-purple); }
+        .word-ar { font-size: 16px; color: #555; }
+        .pronounce-btns { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .pronounce-btns button { background: #fff; border: 2px solid #ccc; padding: 6px 12px; border-radius: 5px; cursor: pointer; transition: 0.2s; font-size: 13px; font-weight: bold; }
+        .interactive-box { text-align: center; padding: 15px; background: var(--bg-color); border-radius: 10px; border: 1px solid #ddd; }
+        .action-btn { background: var(--primary-purple); color: white; border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; margin: 5px; display: inline-flex; flex-direction: column; align-items: center; }
+        .action-btn.danger { background: #dc3545; } .action-btn.warning { background: #ffc107; color: #000; } .action-btn.success { background: #28a745; }
+        .action-btn:hover .en-sub { color: #fff; } .action-btn.warning:hover .en-sub { color: #000; }
+        .hidden { display: none !important; }
+        .quiz-option { display: block; width: 100%; margin: 10px 0; padding: 15px; background: #fff; border: 2px solid #ddd; border-radius: 8px; font-size: 18px; cursor: pointer; transition: 0.2s; text-align: center; direction: ltr; font-weight: bold; color: var(--primary-purple); }
+        .footer { text-align: center; margin-top: 40px; padding: 20px; color: var(--text-gray); font-weight: bold; font-size: 15px; border-top: 1px solid #ddd;}
+    </style>
+</head>
+<body>
+
+<div class="top-header">
+    <div class="header-title">
+        <h2>👑 إنجليزي مع Muzzy</h2>
+        <span class="en-sub">English with Muzzy | Scene 4</span>
+    </div>
+    <div class="points-badge" id="pointsDisplay">
+        ⭐ 100 نقطة | 🎯 المستوى: مبتدئ<br>
+        <span class="en-sub" style="color: #856404;">100 Points | Level: Beginner</span>
+    </div>
+</div>
+
+<div id="dailyCompletionBanner" class="completion-banner hidden">
+    <h3 style="margin: 0; margin-bottom: 5px;">🎉 عظيم! لقد أنهيت درس اليوم بنجاح ✔️</h3>
+    <span class="en-sub" style="color: #155724; font-size: 16px;">Awesome! You have successfully completed today's lesson.</span>
+</div>
+
+<div class="main-layout">
+    
+    <div class="media-column">
+        <div id="progressIndicators" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; font-size: 13px; font-weight: bold; color: var(--text-gray); background: white; padding: 10px; border-radius: 8px; border: 1px solid #eee;">
+            <span id="indRoleplay">🗣️ التحدث Speaking: ❌</span> | 
+            <span id="indDictation">✍️ الإملاء Dictation: ❌</span> | 
+            <span id="indQuiz">📋 الامتحان Quiz: ❌</span> | 
+            <span id="indVocab">🎧 الكلمات Vocab: ❌</span>
+        </div>
+
+        <div class="video-wrapper">
+            <div id="youtubePlayer"></div>
+        </div>
+
+        <div class="speed-controls">
+            <button class="speed-btn active-speed" id="speed1" onclick="changeVideoSpeed(1, this)">
+                السرعة العادية <span class="en-sub">Normal Speed</span>
+            </button>
+            <button class="speed-btn" id="speed075" onclick="changeVideoSpeed(0.75, this)">
+                بطيء (0.75x) <span class="en-sub">Slow (0.75x)</span>
+            </button>
+            <button class="speed-btn" id="speed05" onclick="changeVideoSpeed(0.5, this)">
+                بطيء جداً (0.5x) <span class="en-sub">Very Slow (0.5x)</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="interactive-column">
+        <div class="tabs-row">
+            <button class="tab-btn active" onclick="switchTab('scriptTab', this)">📖 السكريبت <span class="en-sub">Script</span></button>
+            <button class="tab-btn" onclick="switchTab('speakTab', this)">🗣️ تحدث <span class="en-sub">Speak</span></button>
+            <button class="tab-btn" onclick="switchTab('writeTab', this)">✍️ إملاء <span class="en-sub">Dictation</span></button>
+            <button class="tab-btn locked" id="quizTabBtn" onclick="if(!this.classList.contains('locked')) switchTab('quizTab', this)">🔒 الامتحان <span class="en-sub">Quiz</span></button>
+            <button class="tab-btn" onclick="switchTab('dictTab', this)">
+                <div><span id="wordCounter" class="word-counter-badge">0</span>🏦 القاموس</div>
+                <span class="en-sub">Dictionary</span>
+            </button>
+        </div>
+
+        <div class="content-area">
+            
+            <div id="scriptTab" class="tab-content active-content">
+                <h3 style="margin-top: 0; color: var(--primary-purple);">السكريبت التفاعلي 📖 <br><span class="en-sub" style="font-size: 16px;">Interactive Script</span></h3>
+                <div class="script-box" id="scriptBoxContainer">
+                    <div class="script-line" data-start="8" data-end="9">Bob!</div>
+                    <div class="script-line" data-start="10" data-end="11">Yes?</div>
+                    <div class="script-line" data-start="13" data-end="15">Trees.</div>
+                    <div class="script-line" data-start="15" data-end="16">Trees?</div>
+                    <div class="script-line" data-start="17" data-end="20">Yes. How many trees?</div>
+                    <div class="script-line" data-start="21" data-end="22">Count.</div>
+                    <div class="script-line" data-start="23" data-end="36">One, two, three, four, five, six, seven, eight, nine, ten.</div>
+                    <div class="script-line" data-start="39" data-end="41">How many trees are there?</div>
+                    <div class="script-line" data-start="43" data-end="68">One, two, three, four, five, six, seven, eight, nine, ten.</div>
+                    <div class="script-line" data-start="72" data-end="76">Bushes. How many bushes are there?</div>
+                    <div class="script-line" data-start="78" data-end="85">There are two, four, six, eight, ten.</div>
+                    <div class="script-line" data-start="85" data-end="89">And how many flowers are there?</div>
+                    <div class="script-line" data-start="89" data-end="90">Flowers?</div>
+                    <div class="script-line" data-start="91" data-end="95">Yes, yes. How many flowers?</div>
+                    <div class="script-line" data-start="96" data-end="101">A hundred? Two hundred? Three hundred? I don't know!</div>
+                    <div class="script-line" data-start="121" data-end="128">A hundred and seven, a hundred and eight, a hundred and nine, a hundred and ten.</div>
+                </div>
+            </div>
+
+            <div id="speakTab" class="tab-content interactive-box">
+                <h3 style="color: var(--primary-purple); margin-top: 0;">🗣️ دورك في التمثيل! <br><span class="en-sub" style="font-size: 16px;">Your Turn to Act!</span></h3>
+                <div style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #eee; margin-top: 15px;">
+                    <h4 id="roleplayCharacter" style="color: #dc3545; font-size: 20px;">🦹‍♂️ Corvex</h4>
+                    <h2 id="roleplayText" style="color: var(--dark-purple); font-size: 28px; direction: ltr; margin-bottom: 5px;">"How many trees?"</h2>
+                    <p id="roleplayTextAr" style="color: var(--text-gray); font-size: 18px; margin-top: 0; margin-bottom: 15px; font-weight: bold;">كم عدد الأشجار؟</p>
+                    
+                    <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                        <button class="action-btn" style="background: #17a2b8;" onclick="listenToRoleplay('en-US')">🇺🇸 أمريكي <span class="en-sub">US Audio</span></button>
+                        <button class="action-btn" style="background: #e83e8c;" onclick="listenToRoleplay('en-GB')">🇬🇧 بريطاني <span class="en-sub">UK Audio</span></button>
+                        <button id="recordBtn" class="action-btn danger" onclick="toggleRoleplayRecord()">🎙️ ابدأ التحدث <span class="en-sub">Start Speaking</span></button>
+                    </div>
+                    <p id="roleplayResult" style="font-weight: bold; font-size: 18px; min-height: 40px; margin-top: 15px;"></p>
+                    <button id="nextRoleplayBtn" class="action-btn success hidden" onclick="nextRoleplay()">المشهد التالي ➡️ <span class="en-sub">Next Scene</span></button>
+                </div>
+            </div>
+
+            <div id="writeTab" class="tab-content interactive-box">
+                <h3 style="color: var(--primary-purple); margin-top: 0;">✍️ استمع واكتب <br><span class="en-sub" style="font-size: 16px;">Listen and Write</span></h3>
+                <div style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #eee; margin-top: 15px; direction: ltr;">
+                    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;">
+                        <button class="action-btn" onclick="playDictationAudio()" style="background: #6f42c1;">🎬 اسمع من الفيديو <span class="en-sub">Play Video</span></button>
+                        <button class="action-btn" style="background: #17a2b8;" onclick="playDictationTTS('en-US')">🇺🇸 أمريكي <span class="en-sub">US Audio</span></button>
+                        <button class="action-btn" style="background: #e83e8c;" onclick="playDictationTTS('en-GB')">🇬🇧 بريطاني <span class="en-sub">UK Audio</span></button>
+                    </div>
+                    <input type="text" id="dictationInput" placeholder="اكتب الجملة هنا... / Type the sentence here..." style="width: 80%; padding: 15px; font-size: 18px; border: 2px solid #ccc; border-radius: 8px; margin-bottom: 15px; text-align: center;">
+                    <br>
+                    <p id="dictHint" style="direction: rtl; color: var(--text-gray); margin-bottom: 10px; font-weight: bold;"></p>
+                    <button class="action-btn success" onclick="checkDictation()">تحقق من الإجابة ✔️ <span class="en-sub">Check Answer</span></button>
+                    <button id="nextDictationBtn" class="action-btn hidden" onclick="nextDictation()">الجملة التالية ➡️ <span class="en-sub">Next Sentence</span></button>
+                    <p id="dictationResult" style="font-weight: bold; font-size: 20px; margin-top: 15px; direction: rtl;"></p>
+                </div>
+            </div>
+
+            <div id="quizTab" class="tab-content interactive-box">
+                <div id="lockedMessage">
+                    <h3 style="color: var(--text-gray);">الامتحان مقفل 🔒 <br><span class="en-sub" style="font-size: 16px;">Quiz Locked</span></h3>
+                </div>
+                <div id="unlockedQuiz" class="hidden">
+                    <h3 style="color: #28a745; margin-top: 0;">🔓 امتحان المقطع <br><span class="en-sub" style="font-size: 16px;">Scene Quiz</span></h3>
+                    <div id="quizQuestionContainer" style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #eee;">
+                        <h4 id="quizQuestionText" style="direction: ltr; font-size: 18px; color: var(--primary-purple);"></h4>
+                        <p id="quizQuestionTextAr" style="direction: rtl; font-size: 14px; color: #666; margin-bottom: 15px;"></p>
+                        <div id="quizOptionsArea"></div>
+                    </div>
+                    <button id="nextQuizBtn" class="action-btn hidden" onclick="nextQuizQuestion()" style="margin-top: 15px;">السؤال التالي ➡️ <span class="en-sub">Next Question</span></button>
+                </div>
+            </div>
+
+            <div id="dictTab" class="tab-content interactive-box">
+                <div id="dictDefaultView">
+                    <h3 style="color: var(--primary-purple); margin-top: 0;">🏦 القاموس الناطق <br><span class="en-sub" style="font-size: 16px;">Smart Dictionary</span></h3>
+                    <div class="dictionary-box" id="wordBankList">
+                        <p style="color: #888; margin-top: 20px;">لم تقم بإضافة كلمات بعد.<br><span class="en-sub">No words added yet.</span></p>
+                    </div>
+                    <button class="action-btn success" style="width: 80%;" onclick="startAudioVocabQuiz()">🎧 تحدي الاستماع <span class="en-sub">Audio Challenge</span></button>
+                </div>
+
+                <div id="dictQuizView" class="hidden">
+                    <h3 style="color: var(--primary-purple); margin-top: 0;">🎧 تحدي الاستماع <br><span class="en-sub" style="font-size: 16px;">Audio Challenge</span></h3>
+                    <p style="color: #007bff; font-weight: bold; margin-bottom: 5px;" id="quizCounterDisplay">السؤال 1 <span class="en-sub">Question 1</span></p>
+                    <button class="action-btn warning" style="border-radius: 50%; width: 60px; height: 60px; font-size: 24px; padding: 0; justify-content: center;" onclick="playCurrentQuizAudio()">🔊</button>
+                    <div id="dictQuizOptions" style="margin-top: 20px;"></div>
+                    <p id="dictQuizResult" style="font-weight: bold; font-size: 18px; margin-top: 15px; min-height: 30px; direction: ltr;"></p>
+                    <button class="action-btn danger" style="margin-top: 20px;" onclick="exitAudioVocabQuiz()">🔙 إنهاء التحدي <span class="en-sub">End Challenge</span></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="footer">Created by: Hisham Embaby</div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+    let player, timeUpdater;
+    let points = 100;
+    let isQuizUnlocked = false;
+    const correctSound = new Audio('correct.mp3');
+    const wrongSound = new Audio('wrong.mp3');
+    const sceneId = "scene_04";
+
+    let taskRoleplayDone = false;
+    let taskDictationDone = false;
+    let taskMiniQuizDone = false;
+    let taskVocabQuizDone = false;
+
+    function checkOverallCompletion() {
+        if (taskRoleplayDone && taskDictationDone && taskMiniQuizDone && taskVocabQuizDone) {
+            const today = new Date().toLocaleDateString();
+            localStorage.setItem(sceneId + '_completed_date', today);
+            document.getElementById('dailyCompletionBanner').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' }); 
+        }
+    }
+
+    function updateProgressIndicators() {
+        if(taskRoleplayDone) document.getElementById('indRoleplay').innerHTML = '🗣️ التحدث Speaking: ✔️ <span style="color:green;">مكتمل / Completed</span>';
+        if(taskDictationDone) document.getElementById('indDictation').innerHTML = '✍️ الإملاء Dictation: ✔️ <span style="color:green;">مكتمل / Completed</span>';
+        if(taskMiniQuizDone) document.getElementById('indQuiz').innerHTML = '📋 الامتحان Quiz: ✔️ <span style="color:green;">مكتمل / Completed</span>';
+        if(taskVocabQuizDone) document.getElementById('indVocab').innerHTML = '🎧 الكلمات Vocab: ✔️ <span style="color:green;">مكتمل / Completed</span>';
+    }
+
+    const mainDictionary = {
+        "tree": "شجرة 🌳", "trees": "أشجار 🌳",
+        "bush": "شجيرة 🌿", "bushes": "شجيرات 🌿",
+        "flower": "زهرة 🌸", "flowers": "زهور 🌸",
+        "count": "عُدّ / يحسب 🔢",
+        "how many": "كم العدد ❓",
+        "there are": "يوجد / هناك",
+        "i don't know": "أنا لا أعرف 🤷‍♂️",
+        "one": "واحد 1️⃣", "two": "اثنان 2️⃣", "three": "ثلاثة 3️⃣", "four": "أربعة 4️⃣", "five": "خمسة 5️⃣",
+        "six": "ستة 6️⃣", "seven": "سبعة 7️⃣", "eight": "ثمانية 8️⃣", "nine": "تسعة 9️⃣", "ten": "عشرة 🔟",
+        "hundred": "مائة 💯", "yes": "نعم 👍", "bob": "بوب 👨‍🌾", "corvex": "كورفيكس 🦹‍♂️", "and": "و"
+    };
+
+    let collectedWords = [];
+
+    function playSound(isCorrect) {
+        if (isCorrect) { correctSound.currentTime = 0; correctSound.play().catch(e=>{}); }
+        else { wrongSound.currentTime = 0; wrongSound.play().catch(e=>{}); }
+    }
+
+    function updatePointsDisplay() { document.getElementById('pointsDisplay').innerHTML = `⭐ ${points} نقطة | 🎯 المستوى: مبتدئ <br><span class="en-sub" style="color: #856404;">${points} Points | Level: Beginner</span>`; }
+    function addPoints(pts) { points += pts; updatePointsDisplay(); }
+    
+    function deductPoints(pts) { 
+        points -= pts; 
+        if (points < 0) points = 0; 
+        updatePointsDisplay(); 
+        
+        const badge = document.getElementById('pointsDisplay');
+        badge.classList.add('points-deducted');
+        setTimeout(() => badge.classList.remove('points-deducted'), 400);
+    }
+
+    window.onload = function() {
+        const today = new Date().toLocaleDateString();
+        if (localStorage.getItem(sceneId + '_completed_date') === today) {
+            taskRoleplayDone = true; taskDictationDone = true; taskMiniQuizDone = true; taskVocabQuizDone = true;
+            updateProgressIndicators();
+            document.getElementById('dailyCompletionBanner').classList.remove('hidden');
+        }
+    };
+
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('youtubePlayer', {
+            videoId: 'FlJ0tzCMefY', 
+            playerVars: { 'playsinline': 1, 'rel': 0, 'modestbranding': 1 },
+            events: { 'onStateChange': onPlayerStateChange }
+        });
+    }
+
+    function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING) timeUpdater = setInterval(checkVideoTime, 200);
+        else clearInterval(timeUpdater);
+    }
+
+    function changeVideoSpeed(rate, btn) {
+        if(player && player.setPlaybackRate) {
+            player.setPlaybackRate(rate);
+            document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active-speed'));
+            btn.classList.add('active-speed');
+        }
+    }
+
+    function checkVideoTime() {
+        if (!player || !player.getCurrentTime) return;
+        const currentTime = player.getCurrentTime();
+        
+        document.querySelectorAll('.script-line').forEach(line => {
+            const start = parseFloat(line.getAttribute('data-start'));
+            const end = parseFloat(line.getAttribute('data-end'));
+            
+            if (currentTime >= start && currentTime <= end) {
+                if (!line.classList.contains('active-line')) {
+                    line.classList.add('active-line');
+                    const scriptBox = document.getElementById('scriptBoxContainer');
+                    const scrollPos = line.offsetTop - (scriptBox.clientHeight / 2) + (line.clientHeight / 2);
+                    scriptBox.scrollTo({ top: scrollPos, behavior: 'smooth' });
+                }
+            } else { line.classList.remove('active-line'); }
+        });
+        
+        if (currentTime >= 120 && !isQuizUnlocked) unlockQuiz();
+    }
+
+    function unlockQuiz() {
+        isQuizUnlocked = true;
+        const btn = document.getElementById('quizTabBtn');
+        btn.classList.remove('locked'); btn.innerHTML = "🔓 الامتحان <span class='en-sub'>Quiz</span>";
+        btn.style.background = "#28a745"; btn.style.color = "white";
+        document.getElementById('lockedMessage').classList.add('hidden');
+        document.getElementById('unlockedQuiz').classList.remove('hidden');
+    }
+
+    function switchTab(tabId, btnElement) {
+        if (btnElement.classList.contains('locked')) return;
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active-content'));
+        document.querySelectorAll('.tab-btn').forEach(btn => { if(!btn.classList.contains('locked') || btn.id === 'quizTabBtn') btn.classList.remove('active'); });
+        document.getElementById(tabId).classList.add('active-content');
+        btnElement.classList.add('active');
+    }
+
+    document.querySelectorAll('.script-line').forEach(line => {
+        let html = line.innerText;
+        const compounds = ["how many", "there are", "i don't know"];
+        compounds.forEach(phrase => {
+            const regex = new RegExp(`\\b${phrase}\\b|\\b${phrase.replace('?', '\\?')}\\b`, 'gi');
+            html = html.replace(regex, match => match.replace(/ /g, '___SPACE___'));
+        });
+        let words = html.split(' ');
+        line.innerHTML = words.map(w => {
+            let cleanW = w.replace(/___SPACE___/g, ' '); 
+            return `<span class="word">${cleanW}</span>`;
+        }).join(' ');
+    });
+
+    function renderWordBank() {
+        const list = document.getElementById('wordBankList');
+        list.innerHTML = '';
+        
+        if(collectedWords.length === 0) {
+            list.innerHTML = '<p style="color: #888; margin-top: 20px;">لم تقم بإضافة كلمات بعد.<br><span class="en-sub">No words added yet.</span></p>';
+            document.getElementById('wordCounter').innerText = 0;
+            return;
+        }
+
+        document.getElementById('wordCounter').innerText = collectedWords.length;
+        
+        collectedWords.forEach(cleanWord => {
+            const translation = mainDictionary[cleanWord] || "تمت إضافتها 📌 / Added 📌";
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'word-item';
+            itemDiv.innerHTML = `
+                <div style="text-align:left;"><span class="word-en" dir="ltr">${cleanWord}</span><br><span class="word-ar">${translation}</span></div>
+                <div class="pronounce-btns">
+                    <button onclick="speakTTS('${cleanWord.replace(/'/g, "\\'")}', 'en-US')" style="color: #dc3545; border-color: #dc3545;">🇺🇸 US</button>
+                    <button onclick="speakTTS('${cleanWord.replace(/'/g, "\\'")}', 'en-GB')" style="color: #007bff; border-color: #007bff;">🇬🇧 UK</button>
+                    <button onclick="removeWord('${cleanWord.replace(/'/g, "\\'")}')" title="حذف الكلمة / Remove Word" style="color: #dc3545; border: none; background: transparent; font-size: 16px; padding: 0 5px;">❌</button>
+                </div>`;
+            list.appendChild(itemDiv);
+        });
+    }
+
+    function removeWord(wordToRemove) {
+        collectedWords = collectedWords.filter(w => w !== wordToRemove);
+        renderWordBank();
+    }
+
+    document.querySelectorAll('.word').forEach(wordEl => {
+        wordEl.addEventListener('click', function() {
+            const cleanWord = this.innerText.replace(/[.,?!]/g, '').toLowerCase();
+            if(!collectedWords.includes(cleanWord)) {
+                collectedWords.push(cleanWord);
+                renderWordBank();
+            }
+        });
+    });
+
+    function speakTTS(text, langCode) {
+        const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${langCode}&client=tw-ob&q=${encodeURIComponent(text)}`;
+        const audio = new Audio(audioUrl);
+        audio.play().catch(function() {
+            const fallback = new SpeechSynthesisUtterance(text); fallback.lang = langCode; window.speechSynthesis.speak(fallback);
+        });
+    }
+
+    let currentVocabAnswer = ""; let vocabQuizCounter = 0; let activeQuizWords = []; 
+    function startAudioVocabQuiz() {
+        if(collectedWords.length < 3) { alert("برجاء إضافة 3 كلمات على الأقل. \nPlease add at least 3 words."); return; }
+        vocabQuizCounter = 0; activeQuizWords = [...collectedWords].sort(() => 0.5 - Math.random());
+        document.getElementById('dictDefaultView').classList.add('hidden');
+        document.getElementById('dictQuizView').classList.remove('hidden');
+        nextAudioVocabQuestion();
+    }
+
+    function nextAudioVocabQuestion() {
+        if (vocabQuizCounter >= activeQuizWords.length) {
+            document.getElementById('dictQuizResult').innerHTML = "🎉 رائع! لقد أنهيت التحدي بنجاح. <br><span style='font-size:14px; color:#666;'>Great! Challenge completed.</span>";
+            document.getElementById('dictQuizOptions').innerHTML = "";
+            document.getElementById('quizCounterDisplay').innerHTML = "اكتمل التحدي ✔️ <br><span class='en-sub'>Completed</span>";
+            playSound(true); taskVocabQuizDone = true; updateProgressIndicators(); checkOverallCompletion(); return;
+        }
+        const correctWord = activeQuizWords[vocabQuizCounter];
+        currentVocabAnswer = correctWord; vocabQuizCounter++;
+        document.getElementById('quizCounterDisplay').innerHTML = `السؤال ${vocabQuizCounter} من ${activeQuizWords.length} <br><span class="en-sub">Question ${vocabQuizCounter} of ${activeQuizWords.length}</span>`;
+        document.getElementById('dictQuizResult').innerText = "";
+        let allKeys = Object.keys(mainDictionary).filter(k => k !== correctWord).sort(() => 0.5 - Math.random()); 
+        let options = [correctWord, allKeys[0], allKeys[1]].sort(() => 0.5 - Math.random()); 
+        let optsHtml = "";
+        options.forEach(opt => { optsHtml += `<button class="quiz-option" onclick="checkVocabQuiz('${opt.replace(/'/g, "\\'")}', this)">${opt}</button>`; });
+        document.getElementById('dictQuizOptions').innerHTML = optsHtml;
+        setTimeout(playCurrentQuizAudio, 500);
+    }
+
+    function playCurrentQuizAudio() { speakTTS(currentVocabAnswer, 'en-GB'); }
+
+    function checkVocabQuiz(selected, btn) {
+        const btns = document.getElementById('dictQuizOptions').querySelectorAll('button'); btns.forEach(b => b.disabled = true);
+        if(selected === currentVocabAnswer) {
+            btn.style.background = "#28a745"; btn.style.color = "white"; playSound(true); addPoints(10); 
+            document.getElementById('dictQuizResult').innerHTML = "✔️ ممتاز! <br><span style='font-size:14px; color:green;'>Excellent!</span>"; setTimeout(nextAudioVocabQuestion, 1500);
+        } else {
+            btn.style.background = "#dc3545"; btn.style.color = "white"; playSound(false); deductPoints(5); 
+            document.getElementById('dictQuizResult').innerHTML = `❌ خطأ! الكلمة هي: <br><span style='font-size:14px; color:#dc3545;'>Wrong! The word is:</span> <strong style="color:#dc3545;">${currentVocabAnswer}</strong>`;
+            btns.forEach(b => { if(b.innerText === currentVocabAnswer) { b.style.background = "#28a745"; b.style.color = "white"; } });
+            setTimeout(nextAudioVocabQuestion, 2500);
+        }
+    }
+
+    function exitAudioVocabQuiz() { document.getElementById('dictDefaultView').classList.remove('hidden'); document.getElementById('dictQuizView').classList.add('hidden'); }
+
+    const roleplayData = [
+        { char: "🦹‍♂️ Corvex", text: "How many trees?", ar: "كم عدد الأشجار؟", clean: "how many trees" },
+        { char: "👨‍🌾 Bob", text: "I don't know!", ar: "أنا لا أعرف!", clean: "i don't know" },
+        { char: "🦹‍♂️ Corvex", text: "How many flowers are there?", ar: "كم عدد الزهور هناك؟", clean: "how many flowers are there" }
+    ];
+    let rpIndex = 0; let recognition = null; let isRoleplayRecording = false; let currentRoleplaySceneWon = false;
+
+    function listenToRoleplay(langCode) { speakTTS(roleplayData[rpIndex].text, langCode); }
+
+    function toggleRoleplayRecord() {
+        const res = document.getElementById('roleplayResult'); const btn = document.getElementById('recordBtn'); const nextBtn = document.getElementById('nextRoleplayBtn');
+        if (isRoleplayRecording) { if (recognition) recognition.stop(); return; }
+        window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!window.SpeechRecognition) { alert("المتصفح لا يدعم تسجيل الصوت. / Browser does not support speech recognition."); return; }
+        recognition = new SpeechRecognition(); recognition.lang = 'en-US'; recognition.continuous = true; recognition.interimResults = true;
+        
+        let targetText = roleplayData[rpIndex].clean.replace(/['’.,?!]/g, '').toLowerCase().trim(); 
+        let fullTranscript = ""; currentRoleplaySceneWon = false;
+
+        recognition.onstart = () => {
+            isRoleplayRecording = true; nextBtn.classList.add('hidden'); 
+            btn.innerHTML = "⏹️ جاري الاستماع... <br><span class='en-sub'>Listening... (Click to Stop)</span>"; btn.className = "action-btn warning"; 
+            res.innerHTML = "خذ وقتك براحتك... ولما تخلص اضغط للإيقاف. <br><span style='font-size:14px; color:#666;'>Take your time... click to stop when done.</span>"; res.style.color = "#555";
+        };
+        recognition.onresult = (event) => {
+            fullTranscript = "";
+            for (let i = 0; i < event.results.length; i++) fullTranscript += event.results[i][0].transcript.toLowerCase() + " ";
+            res.innerHTML = "تسمعك تقول / Hearing you say: <br><strong style='direction:ltr; display:inline-block;'>" + fullTranscript + "</strong>";
+        };
+        recognition.onend = () => {
+            isRoleplayRecording = false; btn.innerHTML = "🎙️ إعادة التسجيل <br><span class='en-sub'>Try Again</span>"; btn.className = "action-btn danger"; 
+            
+            let currentSpeech = fullTranscript.trim().replace(/['’.,?!]/g, '').toLowerCase();
+            currentSpeech = currentSpeech.replace(/\bi am\b/g, "im");
+            
+            if (!currentSpeech) { res.innerHTML = "❌ لم يتم التقاط صوت. <br><span style='font-size:14px; color:#666;'>No voice detected.</span>"; res.style.color = "red"; playSound(false); return; }
+            
+            let matchCount = 0;
+            const targetWords = targetText.split(' ');
+            targetWords.forEach(word => { if (currentSpeech.includes(word)) matchCount++; });
+
+            if (matchCount >= targetWords.length - 1 || currentSpeech.includes(targetText) || targetText.includes(currentSpeech)) {
+                res.innerHTML = "🎤 ممتاز! النطق صحيح <br><span style='font-size:14px; color:green;'>Excellent! Correct pronunciation.</span>"; res.style.color = "green"; playSound(true); 
+                if(!currentRoleplaySceneWon) { addPoints(30); currentRoleplaySceneWon = true; }
+                nextBtn.classList.remove('hidden');
+            } else { res.innerHTML = "❌ حاول مرة أخرى. <br><span style='font-size:14px; color:#dc3545;'>Please try again.</span>"; res.style.color = "red"; playSound(false); deductPoints(5); }
+        };
+        recognition.start();
+    }
+
+    function nextRoleplay() {
+        rpIndex++;
+        if(rpIndex < roleplayData.length) {
+            document.getElementById('roleplayCharacter').innerText = roleplayData[rpIndex].char;
+            document.getElementById('roleplayText').innerText = '"' + roleplayData[rpIndex].text + '"';
+            document.getElementById('roleplayTextAr').innerText = roleplayData[rpIndex].ar; 
+            document.getElementById('roleplayResult').innerText = '';
+            document.getElementById('nextRoleplayBtn').classList.add('hidden');
+            document.getElementById('recordBtn').innerHTML = "🎙️ ابدأ التحدث <span class='en-sub'>Start Speaking</span>";
+        } else {
+            document.getElementById('roleplayCharacter').innerText = "🎉 رائع! / Awesome!";
+            document.getElementById('roleplayText').innerText = "أنهيت جميع الأدوار / You completed all roles.";
+            document.getElementById('roleplayTextAr').innerText = "";
+            document.getElementById('recordBtn').classList.add('hidden'); 
+            const actionBtns = document.getElementById('speakTab').querySelectorAll('.action-btn');
+            actionBtns.forEach(b => { if(b.id !== 'nextRoleplayBtn' && b.id !== 'recordBtn') b.classList.add('hidden'); });
+            document.getElementById('nextRoleplayBtn').classList.add('hidden');
+            taskRoleplayDone = true; updateProgressIndicators(); checkOverallCompletion();
+        }
+    }
+
+    const dictData = [
+        { ans: ["how many trees"], hintEn: "Asking for the quantity of trees.", time: 17, tts: "How many trees?" },
+        { ans: ["count"], hintEn: "A command to calculate the number.", time: 21, tts: "Count." },
+        { ans: ["i don't know"], hintEn: "Bob has no idea.", time: 96, tts: "I don't know!" }
+    ];
+    let dictIndex = 0;
+
+    function loadDictation() {
+        document.getElementById('dictHint').innerHTML = "💡 تلميح / Hint: <br><span style='color:#007bff; font-size:18px; direction:ltr; display:inline-block; margin-top:5px;'>" + dictData[dictIndex].hintEn + "</span>";
+        document.getElementById('dictationInput').value = ''; document.getElementById('dictationResult').innerText = ''; document.getElementById('nextDictationBtn').classList.add('hidden');
+    }
+    loadDictation();
+
+    function playDictationAudio() { if(player) { player.seekTo(dictData[dictIndex].time, true); player.playVideo(); setTimeout(() => player.pauseVideo(), 3000); } }
+    function playDictationTTS(langCode) { speakTTS(dictData[dictIndex].tts, langCode); }
+
+    function checkDictation() {
+        let val = document.getElementById('dictationInput').value.toLowerCase().trim().replace(/['’.,?!]/g, '').replace(/\s+/g, ' ');
+        
+        let isCorrect = dictData[dictIndex].ans.some(answer => {
+            return answer.toLowerCase().replace(/['’.,?!]/g, '').replace(/\s+/g, ' ') === val;
+        });
+
+        if (isCorrect) {
+            document.getElementById('dictationResult').innerHTML = "✔️ إجابة صحيحة! <br><span style='font-size:14px; color:green;'>Correct Answer!</span>"; document.getElementById('dictationResult').style.color = "green"; playSound(true); addPoints(20); document.getElementById('nextDictationBtn').classList.remove('hidden');
+        } else {
+            document.getElementById('dictationResult').innerHTML = "❌ حاول مرة أخرى! <br><span style='font-size:14px; color:#dc3545;'>Try Again!</span>"; document.getElementById('dictationResult').style.color = "red"; playSound(false); deductPoints(5); 
+        }
+    }
+
+    function nextDictation() {
+        dictIndex++;
+        if(dictIndex < dictData.length) { loadDictation(); }
+        else {
+            document.getElementById('dictHint').innerHTML = "🎉 أتممت الإملاء بنجاح! <br><span style='font-size:14px; color:#666;'>Dictation completed successfully!</span>"; document.getElementById('dictationInput').disabled = true; document.getElementById('nextDictationBtn').classList.add('hidden');
+            taskDictationDone = true; updateProgressIndicators(); checkOverallCompletion();
+        }
+    }
+
+    const quizData = [
+        { qEn: "1. How many trees are there?", qAr: "كم عدد الأشجار الموجودة؟", opts: ["Ten", "Five"], correct: 0 },
+        { qEn: "2. Who is asking Bob to count?", qAr: "من الذي يطلب من بوب أن يَعُدّ؟", opts: ["Corvex", "The King"], correct: 0 },
+        { qEn: "3. Does Bob know how many flowers there are?", qAr: "هل يعرف بوب عدد الزهور؟", opts: ["No, he doesn't know.", "Yes, one hundred."], correct: 0 }
+    ];
+    let quizIndex = 0;
+
+    function loadQuiz() {
+        document.getElementById('quizQuestionText').innerText = quizData[quizIndex].qEn; document.getElementById('quizQuestionTextAr').innerText = quizData[quizIndex].qAr;
+        const optsArea = document.getElementById('quizOptionsArea'); optsArea.innerHTML = '';
+        quizData[quizIndex].opts.forEach((opt, idx) => { optsArea.innerHTML += `<button class="quiz-option" onclick="checkQuiz(this, ${idx === quizData[quizIndex].correct})">${opt}</button>`; });
+        document.getElementById('nextQuizBtn').classList.add('hidden');
+    }
+
+    function checkQuiz(btn, isCorrect) {
+        const btns = btn.parentElement.querySelectorAll('button'); btns.forEach(b => b.disabled = true);
+        if(isCorrect) { btn.style.background = "#28a745"; btn.style.color = "white"; playSound(true); addPoints(50); document.getElementById('nextQuizBtn').classList.remove('hidden'); }
+        else { btn.style.background = "#dc3545"; btn.style.color = "white"; playSound(false); deductPoints(5); btns.forEach(b => { if(b.innerText === quizData[quizIndex].opts[quizData[quizIndex].correct]) b.style.border = "2px solid #28a745"; }); setTimeout(() => { document.getElementById('nextQuizBtn').classList.remove('hidden'); }, 1000); }
+    }
+
+    function nextQuizQuestion() {
+        quizIndex++;
+        if(quizIndex < quizData.length) { loadQuiz(); }
+        else {
+            document.getElementById('quizQuestionContainer').innerHTML = "<h3 style='text-align:center; color: var(--primary-purple);'>🎉 Quiz Completed!</h3>";
+            document.getElementById('nextQuizBtn').classList.add('hidden');
+            taskMiniQuizDone = true; updateProgressIndicators(); checkOverallCompletion();
+        }
+    }
+    loadQuiz();
+</script>
+</body>
+</html>
