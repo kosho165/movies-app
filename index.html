@@ -7,47 +7,44 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <style>
-        :root { --primary-purple: #6f42c1; --dark-purple: #553098; --light-purple: #f3e8ff; --bg-color: #f8f9fa; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg-color); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .container { padding: 20px; max-width: 900px; width: 95%; background: white; border-radius: 20px; box-shadow: 0 15px 50px rgba(111, 66, 193, 0.2); border: 2px solid var(--light-purple); text-align: center; overflow: hidden; }
-        header { background: linear-gradient(135deg, #6f42c1, #8e44ad); color: white; padding: 30px; margin: -22px -22px 30px -22px; }
-        .header-logo { max-height: 100px; background: white; padding: 10px 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .level-section { border-radius: 15px; margin-bottom: 20px; overflow: hidden; border: 2px solid transparent; text-align: left; }
-        .level-header { color: white; padding: 18px 25px; font-size: 22px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .a1-header { background: linear-gradient(135deg, #6f42c1, #d63384); }
-        .a2-header { background: linear-gradient(135deg, #0dcaf0, #0d6efd); }
-        .b1-header { background: linear-gradient(135deg, #20c997, #198754); }
-        .b2-header { background: linear-gradient(135deg, #ffc107, #fd7e14); }
-        .movie-header { background: var(--light-purple); color: var(--dark-purple); padding: 15px 25px; font-size: 19px; font-weight: bold; cursor: pointer; border-bottom: 2px solid #e0cffc; display: flex; justify-content: space-between; }
-        .movie-content { display: none; padding: 15px; background: #fff; }
-        .folder-header { background: #fff; padding: 15px; cursor: pointer; font-weight: bold; border: 2px solid var(--light-purple); border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; color: var(--dark-purple); }
-        .folder-content { display: none; padding: 5px 15px; border-left: 3px solid var(--light-purple); margin-bottom: 15px; }
+        :root { --p-purple: #6f42c1; --d-purple: #553098; --l-purple: #f3e8ff; --bg: #f8f9fa; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { padding: 20px; max-width: 900px; width: 95%; background: white; border-radius: 20px; box-shadow: 0 15px 50px rgba(111, 66, 193, 0.2); border: 2px solid var(--l-purple); text-align: center; }
+        header { background: linear-gradient(135deg, #6f42c1, #8e44ad); padding: 30px; margin: -22px -22px 30px -22px; border-radius: 20px 20px 0 0; }
+        .header-logo { max-height: 100px; background: white; padding: 10px 30px; border-radius: 15px; }
+        .level-section { border-radius: 15px; margin-bottom: 20px; overflow: hidden; text-align: left; }
+        .level-header { color: white; padding: 18px 25px; font-size: 22px; font-weight: bold; display: flex; justify-content: space-between; cursor: pointer; }
+        .a1 { background: linear-gradient(135deg, #6f42c1, #d63384); }
+        .a2 { background: linear-gradient(135deg, #0dcaf0, #0d6efd); }
+        .b1 { background: linear-gradient(135deg, #20c997, #198754); }
+        .b2 { background: linear-gradient(135deg, #ffc107, #fd7e14); }
+        .movie-header { background: var(--l-purple); color: var(--d-purple); padding: 15px 25px; font-size: 19px; font-weight: bold; cursor: pointer; border-bottom: 2px solid #e0cffc; display: flex; justify-content: space-between; }
+        .movie-content { display: none; padding: 15px; }
+        .folder-header { background: #fff; padding: 15px; cursor: pointer; font-weight: bold; border: 2px solid var(--l-purple); border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; color: var(--d-purple); }
+        .folder-content { display: none; padding: 5px 15px; border-left: 3px solid var(--l-purple); margin-bottom: 15px; }
         .lesson-item { background: white; margin: 8px 0; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; text-decoration: none; color: #444; border: 1px solid #eee; font-weight: bold; transition: 0.3s; }
-        .lesson-item:hover { background: var(--light-purple); transform: translateX(5px); border-color: var(--primary-purple); }
-        .status-badge { background: rgba(255,255,255,0.3); padding: 4px 12px; border-radius: 20px; font-size: 13px; }
-        footer { margin-top: 30px; font-weight: bold; color: #777; border-top: 1px solid #eee; padding-top: 20px; }
+        .lesson-item:hover { background: var(--l-purple); transform: translateX(5px); }
         .login-input { width: 85%; padding: 15px; margin: 10px 0; border-radius: 10px; border: 2px solid #eee; font-size: 16px; outline: none; }
-        .login-input:focus { border-color: var(--primary-purple); }
-        .btn-enter { background: var(--primary-purple); color: white; padding: 16px 50px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-enter:hover { background: var(--dark-purple); transform: scale(1.05); }
+        .btn-enter { background: var(--p-purple); color: white; padding: 16px 50px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; }
+        footer { margin-top: 30px; font-weight: bold; color: #777; border-top: 1px solid #eee; padding-top: 20px; }
         .screen { display: none; }
     </style>
 </head>
 <body>
     <div class="container">
-        <header><img src="logo.jpg" alt="CineLingo Logo" class="header-logo"></header>
+        <header><img src="logo.jpg" alt="Logo" class="header-logo"></header>
         <div id="loginScreen" class="screen" style="display: block;">
-            <h2 style="color: var(--primary-purple); margin-bottom: 25px;">Welcome to CineLingo</h2>
+            <h2 style="color: var(--p-purple);">Welcome to CineLingo</h2>
             <input type="text" id="studentName" class="login-input" placeholder="Full Name">
             <input type="email" id="studentEmail" class="login-input" placeholder="Email Address">
             <br><br><button class="btn-enter" onclick="handleLogin()">Enter Academy</button>
         </div>
         <div id="dashboardScreen" class="screen">
-            <div class="level-section" style="border-color: var(--primary-purple);">
-                <div class="level-header a1-header" onclick="toggle('a1-content')"><span>🌟 Level A1 (Beginner)</span><span class="status-badge">UNLOCKED</span></div>
-                <div id="a1-content">
-                    <div class="movie-header" onclick="toggle('movie-muzzy')"><span>🎞️ Movie: Muzzy in Gondoland</span><span>▼</span></div>
-                    <div id="movie-muzzy" class="movie-content" style="display: block;">
+            <div class="level-section" style="border: 2px solid var(--p-purple);">
+                <div class="level-header a1" onclick="toggle('a1-box')"><span>🌟 Level A1 (Beginner)</span><span style="font-size:14px; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:10px;">UNLOCKED</span></div>
+                <div id="a1-box">
+                    <div class="movie-header" onclick="toggle('muzzy-box')"><span>🎞️ Movie: Muzzy in Gondoland</span><span>▼</span></div>
+                    <div id="muzzy-box" class="movie-content">
                         <div class="folder-header" onclick="toggle('ep1')">📁 Episode 1 <span>▼</span></div>
                         <div id="ep1" class="folder-content">
                             <a href="level-a1/muzzy-series/episode-01/scene-01/index.html" class="lesson-item">🎬 Scene 1: Introduction <span>🔓</span></a>
@@ -65,16 +62,16 @@
                     </div>
                 </div>
             </div>
-            <div class="level-section"><div class="level-header a2-header"><span>🔒 Level A2 (Pre-Intermediate)</span><span class="status-badge">LOCKED</span></div></div>
-            <div class="level-section"><div class="level-header b1-header"><span>🔒 Level B1 (Intermediate)</span><span class="status-badge">LOCKED</span></div></div>
-            <div class="level-section"><div class="level-header b2-header"><span>🔒 Level B2 (Upper-Intermediate)</span><span class="status-badge">LOCKED</span></div></div>
+            <div class="level-section"><div class="level-header a2"><span>🔒 Level A2 (Pre-Intermediate)</span><span style="font-size:14px; opacity:0.7;">LOCKED</span></div></div>
+            <div class="level-section"><div class="level-header b1"><span>🔒 Level B1 (Intermediate)</span><span style="font-size:14px; opacity:0.7;">LOCKED</span></div></div>
+            <div class="level-section"><div class="level-header b2"><span>🔒 Level B2 (Upper-Intermediate)</span><span style="font-size:14px; opacity:0.7;">LOCKED</span></div></div>
         </div>
         <footer>Created by : Hisham Embaby</footer>
     </div>
     <script>
         function toggle(id) {
             const el = document.getElementById(id);
-            el.style.display = (el.style.display === 'block' || el.style.display === '') ? 'none' : 'block';
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
         }
         function handleLogin() {
             if(document.getElementById('studentName').value && document.getElementById('studentEmail').value) {
