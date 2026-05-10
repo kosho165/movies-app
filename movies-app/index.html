@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أكاديمية اللغات | Movies to Fluency</title>
+    <title>CineLingo | Language Academy</title>
     
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
@@ -15,6 +15,7 @@
             --dark-purple: #553098;
             --light-purple: #f3e8ff;
             --bg-color: #f8f9fa;
+            --gold: #ffc107;
         }
 
         body {
@@ -25,31 +26,62 @@
             flex-direction: column;
             min-height: 100vh;
             color: #333;
+            position: relative;
+            z-index: 0;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw;
+            height: 80vh;
+            background-image: url('logo.jpg'); 
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.16; 
+            z-index: -1;
+            pointer-events: none;
         }
 
         header {
-            background: var(--primary-purple);
+            background: linear-gradient(135deg, #6f42c1, #8e44ad);
             color: white;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .header-logo {
+            max-height: 90px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 15px;
         }
 
         .container {
             padding: 20px;
-            max-width: 850px;
+            max-width: 900px;
             margin: 0 auto;
             width: 100%;
             flex-grow: 1;
         }
 
         .card {
-            background: white;
-            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(111, 66, 193, 0.1);
+            box-shadow: 0 10px 25px rgba(111, 66, 193, 0.15);
             text-align: center;
             border: 1px solid var(--light-purple);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
         }
 
         input {
@@ -60,10 +92,16 @@
             border-radius: 10px;
             font-size: 16px;
             outline: none;
+            transition: 0.3s;
         }
 
-        button {
-            background: var(--primary-purple);
+        input:focus {
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 8px rgba(111, 66, 193, 0.2);
+        }
+
+        button.main-btn {
+            background: linear-gradient(135deg, #6f42c1, #8e44ad);
             color: white;
             border: none;
             padding: 15px 40px;
@@ -72,49 +110,135 @@
             font-size: 18px;
             font-weight: bold;
             transition: 0.3s;
+            margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(111, 66, 193, 0.3);
+        }
+
+        button.main-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(111, 66, 193, 0.4);
+        }
+
+        .level-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            border: 2px solid #ddd;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .level-header {
+            color: white;
+            padding: 18px 20px;
+            font-size: 22px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* ----- التدرجات اللونية الجديدة والمتناسقة ----- */
+        .level-a1 { background: linear-gradient(135deg, #6f42c1, #d63384); }
+        .level-section.a1 { border-color: #6f42c1; }
+        
+        .level-a2 { background: linear-gradient(135deg, #0dcaf0, #0d6efd); }
+        .level-section.a2 { border-color: #0dcaf0; }
+        
+        .level-b1 { background: linear-gradient(135deg, #20c997, #198754); }
+        .level-section.b1 { border-color: #20c997; }
+        
+        .level-b2 { background: linear-gradient(135deg, #ffc107, #fd7e14); }
+        .level-section.b2 { border-color: #ffc107; }
+        /* ----------------------------------------------- */
+
+        .status-badge {
+            font-size: 14px;
+            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+        .badge-open { background: var(--gold); color: #000; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .badge-locked { background: rgba(255,255,255,0.25); color: #fff; }
+
+        .movie-header {
+            background: var(--light-purple);
+            color: var(--dark-purple);
+            padding: 18px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            border-bottom: 2px solid #e0cffc;
+            transition: 0.3s;
+        }
+        .movie-header:hover { background: #e0cffc; }
+        .movie-content { display: none; padding: 15px; background: rgba(255, 255, 255, 0.95); }
+
+        .folder-header {
+            background: #fff;
+            color: var(--dark-purple);
+            padding: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid var(--light-purple);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: 0.3s;
+        }
+        .folder-header:hover { background: #fafafa; border-color: var(--primary-purple); }
+        .folder-content {
+            display: none;
+            padding: 10px 15px;
+            background: #fafafa;
+            border-left: 3px solid var(--light-purple);
+            border-right: 3px solid var(--light-purple);
+            border-bottom: 3px solid var(--light-purple);
+            border-radius: 0 0 10px 10px;
+            margin-top: -12px;
+            margin-bottom: 15px;
         }
 
         .lesson-item {
-            background: var(--light-purple);
-            margin: 12px 0;
-            padding: 18px;
-            border-radius: 12px;
+            background: white;
+            margin: 8px 0;
+            padding: 15px;
+            border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             text-decoration: none;
             color: var(--dark-purple);
-            border: 1px solid transparent;
-            transition: 0.3s;
+            border: 1px solid var(--light-purple);
+            transition: 0.2s;
         }
-
         .lesson-item:hover {
             border-color: var(--primary-purple);
-            background: #ece0ff;
-            transform: scale(1.02);
+            background: #fdfbff;
+            transform: translateX(5px);
         }
 
-        .scene-title {
-            display: flex;
-            flex-direction: column;
-            text-align: right;
-        }
-
-        .eng-text {
-            font-size: 13px;
-            color: #777;
-            font-style: italic;
-        }
-
-        .status-icon { font-size: 20px; }
+        .scene-title { display: flex; flex-direction: column; text-align: left; }
+        .main-text { font-size: 16px; font-weight: bold; }
+        .status-icon { font-size: 18px; }
 
         footer {
-            padding: 20px;
+            padding: 25px;
             text-align: center;
-            font-size: 14px;
-            color: #666;
-            background: #fff;
-            border-top: 1px solid #eee;
+            font-size: 18px;
+            font-weight: 900;
+            color: #222;
+            background: rgba(255, 255, 255, 0.9);
+            border-top: 2px solid #eee;
+            margin-top: auto;
+            letter-spacing: 0.5px;
         }
 
         .screen { display: none; }
@@ -123,126 +247,141 @@
 <body>
 
     <header>
-        <h1>Movies to Fluency</h1>
-        <div id="userInfo" style="display:none; margin-top:10px;">
+        <img src="logo.jpg" alt="CineLingo Logo" class="header-logo">
+        <div id="userInfo" style="display:none; margin-top:15px; font-weight: bold;">
             <span id="userNameDisplay"></span> | 
-            <button onclick="logout()" style="padding:5px 15px; font-size:14px; background:#dc3545;">خروج / Logout</button>
+            <button onclick="logout()" style="padding:6px 18px; font-size:13px; background:#dc3545; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Logout</button>
         </div>
     </header>
 
     <div class="container">
         <div id="loginScreen" class="screen" style="display: block;">
             <div class="card">
-                <h2 style="color: var(--primary-purple);">مرحباً بك في الكورس / Welcome</h2>
-                <p>سجل بياناتك لتبدأ التعلم / Sign up to start</p>
-                <input type="text" id="studentName" placeholder="اكتب اسمك بالكامل / Your Name">
-                <input type="email" id="studentEmail" placeholder="البريد الإلكتروني / Email">
-                <br><br>
-                <button onclick="handleLogin()">دخول الكورس / Enter Course</button>
+                <h2 style="color: var(--primary-purple); margin-top: 0;">Welcome to CineLingo</h2>
+                <p style="color: #666; font-size: 16px; margin-bottom: 25px;">Enter your details to unlock the learning levels</p>
+                
+                <input type="text" id="studentName" placeholder="Full Name">
+                <input type="email" id="studentEmail" placeholder="Email Address">
+                <br>
+                <button class="main-btn" onclick="handleLogin()">Enter Platform</button>
             </div>
         </div>
 
         <div id="dashboardScreen" class="screen">
-            <div class="card">
-                <h3 style="color: var(--primary-purple);">قائمة دروس الحلقة الأولى / Episode 1 Lessons</h3>
-                <div id="lessonsList" style="margin-top: 20px;">
+            
+            <div class="level-section a1">
+                <div class="level-header level-a1">
+                    <span>🌟 Level A1 (Beginner)</span>
+                    <span class="status-badge badge-open">Unlocked</span>
+                </div>
+                
+                <div class="movie-header" onclick="toggleFolder('movie-muzzy', this)">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 24px;">🎞️</span>
+                        <span>Movie: Muzzy in Gondoland</span>
+                    </div>
+                    <span class="toggle-icon">🔽</span>
+                </div>
+
+                <div id="movie-muzzy" class="movie-content">
                     
-                    <a href="level-a1/muzzy-series/episode-01/scene-01/index.html" class="lesson-item">
-                        <div class="scene-title">
-                            <span>🎬 المشهد 1: التعارف</span>
-                            <span class="eng-text">Scene 1: Introduction</span>
-                        </div>
-                        <span class="status-icon">🔓</span>
-                    </a>
+                    <div class="folder-header" onclick="toggleFolder('ep1-content', this)">
+                        <span>📁 Episode 1</span>
+                        <span class="toggle-icon">🔽</span>
+                    </div>
+                    <div id="ep1-content" class="folder-content">
+                        <a href="level-a1/muzzy-series/episode-01/scene-01/index.html" class="lesson-item">
+                            <div class="scene-title"><span class="main-text">🎬 Scene 1: Introduction</span></div>
+                            <span class="status-icon">🔓</span>
+                        </a>
+                        <a href="level-a1/muzzy-series/episode-01/scene-02/index.html" class="lesson-item">
+                            <div class="scene-title"><span class="main-text">🎬 Scene 2: In the Garden</span></div>
+                            <span class="status-icon">🔓</span>
+                        </a>
+                        <a href="level-a1/muzzy-series/episode-01/scene-03/index.html" class="lesson-item">
+                            <div class="scene-title"><span class="main-text">🎬 Scene 3: The Great Escape</span></div>
+                            <span class="status-icon">🔓</span>
+                        </a>
+                        <a href="level-a1/muzzy-series/episode-01/scene-04/index.html" class="lesson-item">
+                            <div class="scene-title"><span class="main-text">🎬 Scene 4: The Confrontation</span></div>
+                            <span class="status-icon">🔓</span>
+                        </a>
+                        <a href="level-a1/muzzy-series/episode-01/scene-05/index.html" class="lesson-item">
+                            <div class="scene-title"><span class="main-text">🎬 Scene 5: Happy Ending</span></div>
+                            <span class="status-icon">🔓</span>
+                        </a>
+                    </div>
 
-                    <a href="level-a1/muzzy-series/episode-01/scene-02/index.html" class="lesson-item">
-                        <div class="scene-title">
-                            <span>🎬 المشهد 2: في الحديقة</span>
-                            <span class="eng-text">Scene 2: In the Garden</span>
-                        </div>
-                        <span class="status-icon">🔓</span>
-                    </a>
-
-                    <a href="level-a1/muzzy-series/episode-01/scene-03/index.html" class="lesson-item">
-                        <div class="scene-title">
-                            <span>🎬 المشهد 3: الهروب الكبير</span>
-                            <span class="eng-text">Scene 3: The Great Escape</span>
-                        </div>
-                        <span class="status-icon">🔓</span>
-                    </a>
-
-                    <a href="level-a1/muzzy-series/episode-01/scene-04/index.html" class="lesson-item">
-                        <div class="scene-title">
-                            <span>🎬 المشهد 4: المواجهة</span>
-                            <span class="eng-text">Scene 4: The Confrontation</span>
-                        </div>
-                        <span class="status-icon">🔓</span>
-                    </a>
-
-                    <a href="level-a1/muzzy-series/episode-01/scene-05/index.html" class="lesson-item">
-                        <div class="scene-title">
-                            <span>🎬 المشهد 5: النهاية السعيدة</span>
-                            <span class="eng-text">Scene 5: Happy Ending</span>
-                        </div>
-                        <span class="status-icon">🔓</span>
-                    </a>
-
+                    <div class="folder-header" onclick="toggleFolder('ep2-content', this)">
+                        <span>📁 Episode 2</span>
+                        <span class="toggle-icon">🔽</span>
+                    </div>
+                    <div id="ep2-content" class="folder-content">
+                        <a href="level-a1/muzzy-series/episode-02/scene-01/index.html" class="lesson-item">
+                            <div class="scene-title"><span class="main-text">🎬 Scene 1</span></div>
+                            <span class="status-icon">🔓</span>
+                        </a>
+                        <a href="level-a1/muzzy-series/episode-02/scene-02/index.html" class="lesson-item">
+                            <div class="scene-title"><span class="main-text">🎬 Scene 2</span></div>
+                            <span class="status-icon">🔓</span>
+                        </a>
+                        <a href="level-a1/muzzy-series/episode-02/scene-03/index.html" class="lesson-item">
+                            <div class="scene-title"><span class="main-text">🎬 Scene 3</span></div>
+                            <span class="status-icon">🔓</span>
+                        </a>
+                        <a href="level-a1/muzzy-series/episode-02/scene-04/index.html" class="lesson-item">
+                            <div class="scene-title"><span class="main-text">🎬 Scene 4</span></div>
+                            <span class="status-icon">🔓</span>
+                        </a>
+                        <a href="level-a1/muzzy-series/episode-02/scene-05/index.html" class="lesson-item">
+                            <div class="scene-title"><span class="main-text">🎬 Scene 5</span></div>
+                            <span class="status-icon">🔓</span>
+                        </a>
+                    </div>
+                </div> 
+            </div> 
+            
+            <div class="level-section a2">
+                <div class="level-header level-a2">
+                    <span>🔒 Level A2 (Pre-Intermediate)</span>
+                    <span class="status-badge badge-locked">Locked</span>
                 </div>
+            </div>
 
-                <h3 style="color: var(--primary-purple); margin-top: 40px; border-top: 2px solid #eee; padding-top: 20px;">قائمة دروس الحلقة الثانية / Episode 2 Lessons</h3>
-                <div style="margin-top: 20px;">
-                    
-                    <a href="level-a1/muzzy-series/episode-02/scene-01/index.html" class="lesson-item">
-                        <div class="scene-title">
-                            <span>🎬 المشهد 1</span>
-                            <span class="eng-text">Scene 1</span>
-                        </div>
-                        <span class="status-icon">🔓</span>
-                    </a>
-
-                    <a href="level-a1/muzzy-series/episode-02/scene-02/index.html" class="lesson-item">
-                        <div class="scene-title">
-                            <span>🎬 المشهد 2</span>
-                            <span class="eng-text">Scene 2</span>
-                        </div>
-                        <span class="status-icon">🔓</span>
-                    </a>
-
-                    <a href="level-a1/muzzy-series/episode-02/scene-03/index.html" class="lesson-item">
-                        <div class="scene-title">
-                            <span>🎬 المشهد 3</span>
-                            <span class="eng-text">Scene 3</span>
-                        </div>
-                        <span class="status-icon">🔓</span>
-                    </a>
-
-                    <a href="level-a1/muzzy-series/episode-02/scene-04/index.html" class="lesson-item">
-                        <div class="scene-title">
-                            <span>🎬 المشهد 4</span>
-                            <span class="eng-text">Scene 4</span>
-                        </div>
-                        <span class="status-icon">🔓</span>
-                    </a>
-
-                    <a href="level-a1/muzzy-series/episode-02/scene-05/index.html" class="lesson-item">
-                        <div class="scene-title">
-                            <span>🎬 المشهد 5</span>
-                            <span class="eng-text">Scene 5</span>
-                        </div>
-                        <span class="status-icon">🔓</span>
-                    </a>
-
+            <div class="level-section b1">
+                <div class="level-header level-b1">
+                    <span>🔒 Level B1 (Intermediate)</span>
+                    <span class="status-badge badge-locked">Locked</span>
                 </div>
+            </div>
+
+            <div class="level-section b2">
+                <div class="level-header level-b2">
+                    <span>🔒 Level B2 (Upper-Intermediate)</span>
+                    <span class="status-badge badge-locked">Locked</span>
                 </div>
+            </div>
+
         </div>
     </div>
 
     <footer>
-        <p>Created by : Hisham Embaby</p>
+        Created by : Hisham Embaby
     </footer>
 
     <script>
-        // تم تصحيح الروابط هنا بإضافة الشرطة (-) ليتطابق مع اسم المشروع في فايربيز
+        function toggleFolder(folderId, headerElement) {
+            const content = document.getElementById(folderId);
+            const icon = headerElement.querySelector('.toggle-icon');
+            if (content.style.display === "block") {
+                content.style.display = "none";
+                icon.innerText = "🔽";
+            } else {
+                content.style.display = "block";
+                icon.innerText = "🔼";
+            }
+        }
+
         const firebaseConfig = {
             apiKey: "AIzaSyBNF8mnf0ucVbAbuZojokGSKNnUvQNvoGk",
             authDomain: "hisham-s-english-academy.firebaseapp.com",
@@ -259,12 +398,12 @@
         async function handleLogin() {
             const name = document.getElementById('studentName').value;
             const email = document.getElementById('studentEmail').value;
-
-            if (!name || !email) {
-                alert("برجاء كتابة البيانات كاملة / Please fill all fields");
-                return;
+            
+            if (!name || !email) { 
+                alert("Please fill in all fields."); 
+                return; 
             }
-
+            
             try {
                 let userCredential;
                 try {
@@ -272,21 +411,16 @@
                 } catch (e) {
                     userCredential = await auth.signInWithEmailAndPassword(email, "12345678");
                 }
-                
                 const user = userCredential.user;
-
-                // تخزين البيانات لتمييز كورس الأفلام في الفايرستور
                 await db.collection('students').doc(user.uid).set({
                     fullName: name,
                     email: email,
                     courseName: "English Movies Course",
-                    registrationDate: new Date(),
                     lastLogin: new Date()
-                });
-                
+                }, { merge: true });
                 showDashboard(name);
-            } catch (error) {
-                alert("حدث خطأ: " + error.message);
+            } catch (error) { 
+                alert("Error: " + error.message); 
             }
         }
 
@@ -294,16 +428,24 @@
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('dashboardScreen').style.display = 'block';
             document.getElementById('userInfo').style.display = 'block';
-            document.getElementById('userNameDisplay').innerText = "يا " + name;
+            document.getElementById('userNameDisplay').innerText = "Welcome, " + name;
         }
 
-        function logout() {
-            auth.signOut().then(() => { location.reload(); });
+        function logout() { 
+            auth.signOut().then(() => { location.reload(); }); 
         }
 
         auth.onAuthStateChanged(user => {
             if (user) {
-                showDashboard(user.email);
+                db.collection('students').doc(user.uid).get().then(doc => {
+                    if (doc.exists && doc.data().fullName) {
+                        showDashboard(doc.data().fullName);
+                    } else {
+                        showDashboard(user.email);
+                    }
+                }).catch(() => {
+                    showDashboard(user.email);
+                });
             }
         });
     </script>
