@@ -138,7 +138,6 @@
             align-items: center;
         }
 
-        /* ----- التدرجات اللونية الجديدة والمتناسقة ----- */
         .level-a1 { background: linear-gradient(135deg, #6f42c1, #d63384); }
         .level-section.a1 { border-color: #6f42c1; }
         
@@ -150,7 +149,6 @@
         
         .level-b2 { background: linear-gradient(135deg, #ffc107, #fd7e14); }
         .level-section.b2 { border-color: #ffc107; }
-        /* ----------------------------------------------- */
 
         .status-badge {
             font-size: 14px;
@@ -258,8 +256,6 @@
         <div id="loginScreen" class="screen" style="display: block;">
             <div class="card">
                 <h2 style="color: var(--primary-purple); margin-top: 0;">Welcome to CineLingo</h2>
-                <p style="color: #666; font-size: 16px; margin-bottom: 25px;">Enter your details to unlock the learning levels</p>
-                
                 <input type="text" id="studentName" placeholder="Full Name">
                 <input type="email" id="studentEmail" placeholder="Email Address">
                 <br>
@@ -268,7 +264,6 @@
         </div>
 
         <div id="dashboardScreen" class="screen">
-            
             <div class="level-section a1">
                 <div class="level-header level-a1">
                     <span>🌟 Level A1 (Beginner)</span>
@@ -284,7 +279,6 @@
                 </div>
 
                 <div id="movie-muzzy" class="movie-content">
-                    
                     <div class="folder-header" onclick="toggleFolder('ep1-content', this)">
                         <span>📁 Episode 1</span>
                         <span class="toggle-icon">🔽</span>
@@ -302,14 +296,6 @@
                             <div class="scene-title"><span class="main-text">🎬 Scene 3: The Great Escape</span></div>
                             <span class="status-icon">🔓</span>
                         </a>
-                        <a href="level-a1/muzzy-series/episode-01/scene-04/index.html" class="lesson-item">
-                            <div class="scene-title"><span class="main-text">🎬 Scene 4: The Confrontation</span></div>
-                            <span class="status-icon">🔓</span>
-                        </a>
-                        <a href="level-a1/muzzy-series/episode-01/scene-05/index.html" class="lesson-item">
-                            <div class="scene-title"><span class="main-text">🎬 Scene 5: Happy Ending</span></div>
-                            <span class="status-icon">🔓</span>
-                        </a>
                     </div>
 
                     <div class="folder-header" onclick="toggleFolder('ep2-content', this)">
@@ -318,50 +304,20 @@
                     </div>
                     <div id="ep2-content" class="folder-content">
                         <a href="level-a1/muzzy-series/episode-02/scene-01/index.html" class="lesson-item">
-                            <div class="scene-title"><span class="main-text">🎬 Scene 1</span></div>
+                            <div class="scene-title"><span class="main-text">🎬 Scene 1: The King's Garden</span></div>
                             <span class="status-icon">🔓</span>
                         </a>
                         <a href="level-a1/muzzy-series/episode-02/scene-02/index.html" class="lesson-item">
-                            <div class="scene-title"><span class="main-text">🎬 Scene 2</span></div>
+                            <div class="scene-title"><span class="main-text">🎬 Scene 2: Corvax's Computer</span></div>
                             <span class="status-icon">🔓</span>
                         </a>
                         <a href="level-a1/muzzy-series/episode-02/scene-03/index.html" class="lesson-item">
-                            <div class="scene-title"><span class="main-text">🎬 Scene 3</span></div>
-                            <span class="status-icon">🔓</span>
-                        </a>
-                        <a href="level-a1/muzzy-series/episode-02/scene-04/index.html" class="lesson-item">
-                            <div class="scene-title"><span class="main-text">🎬 Scene 4</span></div>
-                            <span class="status-icon">🔓</span>
-                        </a>
-                        <a href="level-a1/muzzy-series/episode-02/scene-05/index.html" class="lesson-item">
-                            <div class="scene-title"><span class="main-text">🎬 Scene 5</span></div>
+                            <div class="scene-title"><span class="main-text">🎬 Scene 3: Lunch Time</span></div>
                             <span class="status-icon">🔓</span>
                         </a>
                     </div>
                 </div> 
             </div> 
-            
-            <div class="level-section a2">
-                <div class="level-header level-a2">
-                    <span>🔒 Level A2 (Pre-Intermediate)</span>
-                    <span class="status-badge badge-locked">Locked</span>
-                </div>
-            </div>
-
-            <div class="level-section b1">
-                <div class="level-header level-b1">
-                    <span>🔒 Level B1 (Intermediate)</span>
-                    <span class="status-badge badge-locked">Locked</span>
-                </div>
-            </div>
-
-            <div class="level-section b2">
-                <div class="level-header level-b2">
-                    <span>🔒 Level B2 (Upper-Intermediate)</span>
-                    <span class="status-badge badge-locked">Locked</span>
-                </div>
-            </div>
-
         </div>
     </div>
 
@@ -398,30 +354,17 @@
         async function handleLogin() {
             const name = document.getElementById('studentName').value;
             const email = document.getElementById('studentEmail').value;
-            
-            if (!name || !email) { 
-                alert("Please fill in all fields."); 
-                return; 
-            }
-            
+            if (!name || !email) { alert("Please fill in all fields."); return; }
             try {
                 let userCredential;
-                try {
-                    userCredential = await auth.createUserWithEmailAndPassword(email, "12345678");
-                } catch (e) {
-                    userCredential = await auth.signInWithEmailAndPassword(email, "12345678");
-                }
+                try { userCredential = await auth.createUserWithEmailAndPassword(email, "12345678"); }
+                catch (e) { userCredential = await auth.signInWithEmailAndPassword(email, "12345678"); }
                 const user = userCredential.user;
                 await db.collection('students').doc(user.uid).set({
-                    fullName: name,
-                    email: email,
-                    courseName: "English Movies Course",
-                    lastLogin: new Date()
+                    fullName: name, email: email, courseName: "English Movies Course", lastLogin: new Date()
                 }, { merge: true });
                 showDashboard(name);
-            } catch (error) { 
-                alert("Error: " + error.message); 
-            }
+            } catch (error) { alert("Error: " + error.message); }
         }
 
         function showDashboard(name) {
@@ -431,21 +374,13 @@
             document.getElementById('userNameDisplay').innerText = "Welcome, " + name;
         }
 
-        function logout() { 
-            auth.signOut().then(() => { location.reload(); }); 
-        }
+        function logout() { auth.signOut().then(() => { location.reload(); }); }
 
         auth.onAuthStateChanged(user => {
             if (user) {
                 db.collection('students').doc(user.uid).get().then(doc => {
-                    if (doc.exists && doc.data().fullName) {
-                        showDashboard(doc.data().fullName);
-                    } else {
-                        showDashboard(user.email);
-                    }
-                }).catch(() => {
-                    showDashboard(user.email);
-                });
+                    showDashboard(doc.exists ? doc.data().fullName : user.email);
+                }).catch(() => showDashboard(user.email));
             }
         });
     </script>
