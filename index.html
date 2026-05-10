@@ -22,8 +22,8 @@
             background-color: var(--bg-color);
             margin: 0;
             display: flex;
-            justify-content: center; /* توسطن التطبيق بالعرض */
-            align-items: center;    /* توسطن التطبيق بالطول */
+            justify-content: center; /* لتوسيط المحتوى عرضياً */
+            align-items: center;    /* لتوسيط المحتوى طولياً */
             min-height: 100vh;
             color: #333;
         }
@@ -31,7 +31,7 @@
         .container {
             padding: 20px;
             max-width: 900px;
-            width: 95%; /* عشان يبقى واخد راحته في الموبايل */
+            width: 95%;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(111, 66, 193, 0.2);
@@ -85,7 +85,7 @@
             justify-content: space-between;
         }
 
-        .movie-content { padding: 15px; }
+        .movie-content { padding: 15px; display: block; }
 
         .folder-header {
             background: #fff;
@@ -99,7 +99,7 @@
             justify-content: space-between;
         }
 
-        .folder-content { display: none; padding: 10px; }
+        .folder-content { display: block; padding: 10px; }
 
         .lesson-item {
             background: white;
@@ -112,9 +112,10 @@
             color: var(--dark-purple);
             border: 1px solid var(--light-purple);
             font-weight: bold;
+            transition: 0.3s;
         }
 
-        .lesson-item:hover { background: var(--light-purple); transform: translateX(5px); transition: 0.3s; }
+        .lesson-item:hover { background: var(--light-purple); transform: translateX(5px); }
 
         .btn-enter {
             background: var(--primary-purple);
@@ -125,6 +126,16 @@
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
+        }
+
+        .locked-level {
+            background: #eee;
+            padding: 15px;
+            border-radius: 10px;
+            color: #999;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-align: left;
         }
 
         footer {
@@ -160,39 +171,38 @@
                     <span style="background:orange; color:black; padding:2px 10px; border-radius:10px; font-size:14px;">UNLOCKED</span>
                 </div>
                 
-                <div class="movie-header" onclick="toggle('movie-content')">
+                <div class="movie-header">
                     <span>🎞️ Movie: Muzzy in Gondoland</span>
                     <span>▼</span>
                 </div>
 
-                <div id="movie-content" class="movie-content">
-                    <div class="folder-header" onclick="toggle('ep1')">📁 Episode 1 <span>▼</span></div>
-                    <div id="ep1" class="folder-content" style="display:block;">
+                <div class="movie-content">
+                    <div class="folder-header">📁 Episode 1 <span>▼</span></div>
+                    <div class="folder-content">
                         <a href="level-a1/muzzy-series/episode-01/scene-01/index.html" class="lesson-item">🎬 Scene 1: Introduction <span>🔓</span></a>
                         <a href="level-a1/muzzy-series/episode-01/scene-02/index.html" class="lesson-item">🎬 Scene 2: In the Garden <span>🔓</span></a>
+                        <a href="level-a1/muzzy-series/episode-01/scene-03/index.html" class="lesson-item">🎬 Scene 3: The Great Escape <span>🔓</span></a>
                     </div>
 
-                    <div class="folder-header" onclick="toggle('ep2')">📁 Episode 2 <span>▼</span></div>
-                    <div id="ep2" class="folder-content">
+                    <div class="folder-header">📁 Episode 2 <span>▼</span></div>
+                    <div class="folder-content">
                         <a href="level-a1/muzzy-series/episode-02/scene-01/index.html" class="lesson-item">🎬 Scene 1: The King's Garden <span>🔓</span></a>
+                        <a href="level-a1/muzzy-series/episode-02/scene-02/index.html" class="lesson-item">🎬 Scene 2: Corvax's Computer <span>🔓</span></a>
+                        <a href="level-a1/muzzy-series/episode-02/scene-03/index.html" class="lesson-item">🎬 Scene 3: Lunch Time <span>🔓</span></a>
                     </div>
                 </div>
             </div>
 
-            <div style="background:#eee; padding:15px; border-radius:10px; color:#999; margin-bottom:10px;">🔒 Level A2 (Locked)</div>
-            <div style="background:#eee; padding:15px; border-radius:10px; color:#999;">🔒 Level B1 (Locked)</div>
+            <div class="locked-level">🔒 Level A2 (Pre-Intermediate)</div>
+            <div class="locked-level">🔒 Level B1 (Intermediate)</div>
+            <div class="locked-level">🔒 Level B2 (Upper-Intermediate)</div>
         </div>
 
         <footer>Created by : Hisham Embaby</footer>
     </div>
 
     <script>
-        function toggle(id) {
-            const el = document.getElementById(id);
-            el.style.display = el.style.display === 'block' ? 'none' : 'block';
-        }
-
-        // Firebase - استخدم نفس بياناتك القديمة هنا
+        // Firebase Config - تأكد من استخدام بياناتك الأصلية هنا
         const firebaseConfig = {
             apiKey: "AIzaSyBNF8mnf0ucVbAbuZojokGSKNnUvQNvoGk",
             authDomain: "hisham-s-english-academy.firebaseapp.com",
