@@ -33,18 +33,27 @@
 <body>
     <div class="container">
         <header><img src="logo.jpg" alt="Logo" class="header-logo"></header>
+        
         <div id="loginScreen" class="screen" style="display: block;">
-            <h2 style="color: var(--p-purple);">Welcome to CineLingo</h2>
+            <h2 style="color: var(--p-purple);">Welcome to CineLingo[cite: 1]</h2>
             <input type="text" id="studentName" class="login-input" placeholder="Full Name">
             <input type="email" id="studentEmail" class="login-input" placeholder="Email Address">
             <br><br><button class="btn-enter" onclick="handleLogin()">Enter Academy</button>
         </div>
+
         <div id="dashboardScreen" class="screen">
+            <!-- Level A1 -->
             <div class="level-section" style="border: 2px solid var(--p-purple);">
-                <div class="level-header a1" onclick="toggle('a1-box')"><span>🌟 Level A1 (Beginner)</span><span style="font-size:14px; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:10px;">UNLOCKED</span></div>
+                <div class="level-header a1" onclick="toggle('a1-box')">
+                    <span>🌟 Level A1 (Beginner)</span>
+                    <span style="font-size:14px; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:10px;">UNLOCKED</span>
+                </div>
                 <div id="a1-box">
-                    <div class="movie-header" onclick="toggle('muzzy-box')"><span>🎞️ Movie: Muzzy in Gondoland</span><span>▼</span></div>
+                    <div class="movie-header" onclick="toggle('muzzy-box')">
+                        <span>🎞️ Movie: Muzzy in Gondoland</span><span>▼</span>
+                    </div>
                     <div id="muzzy-box" class="movie-content">
+                        <!-- Episode 1 -->
                         <div class="folder-header" onclick="toggle('ep1')">📁 Episode 1 <span>▼</span></div>
                         <div id="ep1" class="folder-content">
                             <a href="level-a1/muzzy-series/episode-01/scene-01/index.html" class="lesson-item">🎬 Scene 1: Introduction <span>🔓</span></a>
@@ -53,6 +62,8 @@
                             <a href="level-a1/muzzy-series/episode-01/scene-04/index.html" class="lesson-item">🎬 Scene 4: The Confrontation <span>🔓</span></a>
                             <a href="level-a1/muzzy-series/episode-01/scene-05/index.html" class="lesson-item">🎬 Scene 5: Happy Ending <span>🔓</span></a>
                         </div>
+
+                        <!-- Episode 2 -->
                         <div class="folder-header" onclick="toggle('ep2')">📁 Episode 2 <span>▼</span></div>
                         <div id="ep2" class="folder-content">
                             <a href="level-a1/muzzy-series/episode-02/scene-01/index.html" class="lesson-item">🎬 Scene 1: The King's Garden <span>🔓</span></a>
@@ -61,15 +72,44 @@
                             <a href="level-a1/muzzy-series/episode-02/scene-04/index.html" class="lesson-item">🎬 Scene 4: Counting Clocks <span>🔓</span></a>
                             <a href="level-a1/muzzy-series/episode-02/scene-05/index.html" class="lesson-item">🎬 Scene 5: The Princess and Bob <span>🔓</span></a>
                         </div>
+
+                        <!-- Episode 3 -->
+                        <div class="folder-header" onclick="toggle('ep3')">📁 Episode 3 <span>▼</span></div>
+                        <div id="ep3" class="folder-content">
+                            <a href="level-a1/muzzy-series/episode-03/scene-01/index.html" class="lesson-item">🎬 Scene 1 <span>🔓</span></a>
+                            <a href="level-a1/muzzy-series/episode-03/scene-02/index.html" class="lesson-item">🎬 Scene 2 <span>🔓</span></a>
+                            <a href="level-a1/muzzy-series/episode-03/scene-03/index.html" class="lesson-item">🎬 Scene 3 <span>🔓</span></a>
+                            <a href="level-a1/muzzy-series/episode-03/scene-04/index.html" class="lesson-item">🎬 Scene 4 <span>🔓</span></a>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="level-section"><div class="level-header a2"><span>🔒 Level A2 (Pre-Intermediate)</span><span style="font-size:14px; opacity:0.7;">LOCKED</span></div></div>
-            <div class="level-section"><div class="level-header b1"><span>🔒 Level B1 (Intermediate)</span><span style="font-size:14px; opacity:0.7;">LOCKED</span></div></div>
-            <div class="level-section"><div class="level-header b2"><span>🔒 Level B2 (Upper-Intermediate)</span><span style="font-size:14px; opacity:0.7;">LOCKED</span></div></div>
+
+            <!-- Level A2 -->
+            <div class="level-section">
+                <div class="level-header a2">
+                    <span>🔒 Level A2 (Pre-Intermediate)</span><span style="font-size:14px; opacity:0.7;">LOCKED</span>
+                </div>
+            </div>
+
+            <!-- Level B1 -->
+            <div class="level-section">
+                <div class="level-header b1">
+                    <span>🔒 Level B1 (Intermediate)</span><span style="font-size:14px; opacity:0.7;">LOCKED</span>
+                </div>
+            </div>
+
+            <!-- Level B2 -->
+            <div class="level-section">
+                <div class="level-header b2">
+                    <span>🔒 Level B2 (Upper-Intermediate)</span><span style="font-size:14px; opacity:0.7;">LOCKED</span>
+                </div>
+            </div>
         </div>
-        <footer>Created by : Hisham Embaby</footer>
+
+        <footer>Created by : Hisham Embaby[cite: 1]</footer>
     </div>
+
     <script>
         function toggle(id) {
             const el = document.getElementById(id);
@@ -79,7 +119,9 @@
             if(document.getElementById('studentName').value && document.getElementById('studentEmail').value) {
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboardScreen').style.display = 'block';
-            } else { alert("Please enter both Name and Email"); }
+            } else { 
+                alert("Please enter both Name and Email"); 
+            }
         }
     </script>
 </body>
