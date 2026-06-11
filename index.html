@@ -12,7 +12,7 @@
         .container { padding: 20px; max-width: 900px; width: 95%; background: white; border-radius: 20px; box-shadow: 0 15px 50px rgba(111, 66, 193, 0.2); border: 2px solid var(--l-purple); text-align: center; }
         header { background: linear-gradient(135deg, #6f42c1, #8e44ad); padding: 30px; margin: -22px -22px 30px -22px; border-radius: 20px 20px 0 0; }
         .header-logo { max-height: 100px; background: white; padding: 10px 30px; border-radius: 15px; }
-        .level-section { border-radius: 15px; margin-bottom: 15px; overflow: hidden; text-align: left; }
+        .level-section { border-radius: 15px; margin-bottom: 15px; overflow: hidden; text-align: left; border: 2px solid transparent; transition: 0.3s; }
         .level-header { color: white; padding: 18px 25px; font-size: 22px; font-weight: bold; display: flex; justify-content: space-between; cursor: pointer; }
         .a1 { background: linear-gradient(135deg, #6f42c1, #d63384); }
         .a2 { background: linear-gradient(135deg, #0dcaf0, #0d6efd); }
@@ -28,11 +28,15 @@
         .btn-enter { background: var(--p-purple); color: white; padding: 16px 50px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; }
         footer { margin-top: 30px; font-weight: bold; color: #777; border-top: 1px solid #eee; padding-top: 20px; }
         .screen { display: none; }
+        
+        /* التنسيق الإضافي لتحديد المستوى المفتوح */
+        .level-section.unlocked { border-color: var(--p-purple); }
+        .level-section.unlocked-b1 { border-color: #198754; }
     </style>
 </head>
 <body>
     <div class="container">
-        <header><img src="logo.jpg" alt="Logo" class="header-logo"></header>
+        <header><img src="logo.jpg" alt="Logo" class="header-logo" onerror="this.style.display='none'"></header>
         
         <div id="loginScreen" class="screen" style="display: block;">
             <h2 style="color: var(--p-purple);">Welcome to CineLingo</h2>
@@ -42,8 +46,8 @@
         </div>
 
         <div id="dashboardScreen" class="screen">
-            <!-- Level A1 -->
-            <div class="level-section" style="border: 2px solid var(--p-purple);">
+            
+            <div class="level-section unlocked">
                 <div class="level-header a1" onclick="toggle('a1-box')">
                     <span>🌟 Level A1 (Beginner)</span>
                     <span style="font-size:14px; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:10px;">UNLOCKED</span>
@@ -53,7 +57,6 @@
                         <span>🎞️ Movie: Muzzy in Gondoland</span><span>▼</span>
                     </div>
                     <div id="muzzy-box" class="movie-content">
-                        <!-- Episode 1 -->
                         <div class="folder-header" onclick="toggle('ep1')">📁 Episode 1 <span>▼</span></div>
                         <div id="ep1" class="folder-content">
                             <a href="level-a1/muzzy-series/episode-01/scene-01/index.html" class="lesson-item">🎬 Scene 1: Introduction <span>🔓</span></a>
@@ -63,7 +66,6 @@
                             <a href="level-a1/muzzy-series/episode-01/scene-05/index.html" class="lesson-item">🎬 Scene 5: Happy Ending <span>🔓</span></a>
                         </div>
 
-                        <!-- Episode 2 -->
                         <div class="folder-header" onclick="toggle('ep2')">📁 Episode 2 <span>▼</span></div>
                         <div id="ep2" class="folder-content">
                             <a href="level-a1/muzzy-series/episode-02/scene-01/index.html" class="lesson-item">🎬 Scene 1: The King's Garden <span>🔓</span></a>
@@ -73,7 +75,6 @@
                             <a href="level-a1/muzzy-series/episode-02/scene-05/index.html" class="lesson-item">🎬 Scene 5: The Princess and Bob <span>🔓</span></a>
                         </div>
 
-                        <!-- Episode 3 -->
                         <div class="folder-header" onclick="toggle('ep3')">📁 Episode 3 <span>▼</span></div>
                         <div id="ep3" class="folder-content">
                             <a href="level-a1/muzzy-series/episode-03/scene-01/index.html" class="lesson-item">🎬 Scene 1 <span>🔓</span></a>
@@ -82,7 +83,6 @@
                             <a href="level-a1/muzzy-series/episode-03/scene-04/index.html" class="lesson-item">🎬 Scene 4 <span>🔓</span></a>
                         </div>
 
-                        <!-- Episode 4 -->
                         <div class="folder-header" onclick="toggle('ep4')">📁 Episode 4 <span>▼</span></div>
                         <div id="ep4" class="folder-content">
                             <a href="level-a1/muzzy-series/episode-04/scene-01/index.html" class="lesson-item">🎬 Scene 1 <span>🔓</span></a>
@@ -91,7 +91,6 @@
                             <a href="level-a1/muzzy-series/episode-04/scene-04/index.html" class="lesson-item">🎬 Scene 4 <span>🔓</span></a>
                         </div>
 
-                        <!-- Episode 5 -->
                         <div class="folder-header" onclick="toggle('ep5')">📁 Episode 5 <span>▼</span></div>
                         <div id="ep5" class="folder-content">
                             <a href="level-a1/muzzy-series/episode-05/scene-01/index.html" class="lesson-item">🎬 Scene 1 <span>🔓</span></a>
@@ -100,7 +99,6 @@
                             <a href="level-a1/muzzy-series/episode-05/scene-04/index.html" class="lesson-item">🎬 Scene 4 <span>🔓</span></a>
                         </div>
 
-                        <!-- Episode 6 -->
                         <div class="folder-header" onclick="toggle('ep6')">📁 Episode 6 <span>▼</span></div>
                         <div id="ep6" class="folder-content">
                             <a href="level-a1/muzzy-series/episode-06/scene-01/index.html" class="lesson-item">🎬 Scene 1 <span>🔓</span></a>
@@ -112,21 +110,32 @@
                 </div>
             </div>
 
-            <!-- Level A2 -->
             <div class="level-section">
                 <div class="level-header a2">
                     <span>🔒 Level A2 (Pre-Intermediate)</span><span style="font-size:14px; opacity:0.7;">LOCKED</span>
                 </div>
             </div>
 
-            <!-- Level B1 -->
-            <div class="level-section">
-                <div class="level-header b1">
-                    <span>🔒 Level B1 (Intermediate)</span><span style="font-size:14px; opacity:0.7;">LOCKED</span>
+            <div class="level-section unlocked-b1">
+                <div class="level-header b1" onclick="toggle('b1-box')">
+                    <span>🌟 Level B1 (Intermediate)</span>
+                    <span style="font-size:14px; background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:10px;">UNLOCKED</span>
+                </div>
+                <div id="b1-box" style="display: none;">
+                    <div class="movie-header" onclick="toggle('connect-box')">
+                        <span>🎞️ Series: Connect with English</span><span>▼</span>
+                    </div>
+                    <div id="connect-box" class="movie-content">
+                        <div class="folder-header" onclick="toggle('conn-ep1')">📁 Episode 1 <span>▼</span></div>
+                        <div id="conn-ep1" class="folder-content">
+                            <a href="level-b1/connect-series/episode-01/part-1/index.html" class="lesson-item">🎬 Part 1 <span>🔓</span></a>
+                            <a href="level-b1/connect-series/episode-01/part-2/index.html" class="lesson-item">🎬 Part 2 <span>🔓</span></a>
+                            <a href="level-b1/connect-series/episode-01/part-3/index.html" class="lesson-item">🎬 Part 3 <span>🔓</span></a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Level B2 -->
             <div class="level-section">
                 <div class="level-header b2">
                     <span>🔒 Level B2 (Upper-Intermediate)</span><span style="font-size:14px; opacity:0.7;">LOCKED</span>
